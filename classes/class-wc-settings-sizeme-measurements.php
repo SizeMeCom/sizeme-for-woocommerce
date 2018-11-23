@@ -114,13 +114,6 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 				'id'    => 'general_settings',
 			),
 			array(
-				'title'   => __( 'Custom size selection', 'sizeme' ),
-				'desc'    => __( 'Use custom size selection ', 'sizeme' ),
-				'type'    => 'checkbox',
-				'default' => 'no',
-				'id'      => WC_SizeMe_Measurements::CUSTOM_SIZE_SELECTION_ID,
-			),
-			array(
 				'title'   => __( 'Service status', 'sizeme' ),
 				'type'    => 'select',
 				'options' => array(

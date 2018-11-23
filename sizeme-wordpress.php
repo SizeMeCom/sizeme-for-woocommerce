@@ -127,15 +127,6 @@ class WC_SizeMe_Measurements {
 	const SERVICE_STATUS_ID = 'service_status';
 
 	/**
-	 * Custom size selection key, used when saving settings and when retrieving them.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string CUSTOM_SIZE_SELECTION_ID The key for the custom size selection.
-	 */
-	const CUSTOM_SIZE_SELECTION_ID = 'custom_size_selection';
-
-	/**
 	 * UI option, append content to element, used in settings.
 	 *
 	 * @since 1.0.0
@@ -289,19 +280,6 @@ class WC_SizeMe_Measurements {
 	 */
 	public function get_service_status() {
 		return get_option( self::SERVICE_STATUS_ID );
-	}
-
-	/**
-	 * Get the custom size selection.
-	 *
-	 * Gets if the SizeMe Measurements custom size selection should be used.
-	 *
-	 * @since  1.0.0
-	 *
-	 * @return string Custom size selection, yes, no.
-	 */
-	public function get_custom_size_selection() {
-		return get_option( self::CUSTOM_SIZE_SELECTION_ID );
 	}
 
 	/**

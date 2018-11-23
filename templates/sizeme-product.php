@@ -35,7 +35,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	//<![CDATA[
 	var sizeme_options = {
 		service_status: "<?php echo esc_js( $sizeme->get_service_status() ); ?>",
-		buttonize: "<?php echo esc_js( $sizeme->get_custom_size_selection() ); ?>"
 	};
 
 	if (typeof sizeme_UI_options === 'undefined') {
