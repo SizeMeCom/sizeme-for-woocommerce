@@ -42,6 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	}
 
 	sizeme_UI_options[ 'appendContentTo' ]  = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::APPEND_CONTENT_TO, '' ) ); ?>";
+	sizeme_UI_options[ 'invokeElement' ]  = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::INVOKE_ELEMENT, '' ) ); ?>";
 	sizeme_UI_options[ 'addToCartElement' ] = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ) ); ?>";
 	sizeme_UI_options[ 'addToCartEvent' ]   = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
 

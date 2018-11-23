@@ -136,6 +136,15 @@ class WC_SizeMe_Measurements {
 	const APPEND_CONTENT_TO = 'append_content_to';
 
 	/**
+	 * UI option, invoke element, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string INVOKE_ELEMENT The key for UI option.
+	 */
+	const INVOKE_ELEMENT = 'invoke_element';
+
+	/**
 	 * UI option, add to cart element, used in settings.
 	 *
 	 * @since 1.0.0
