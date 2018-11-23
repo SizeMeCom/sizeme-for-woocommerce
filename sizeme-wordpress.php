@@ -190,6 +190,15 @@ class WC_SizeMe_Measurements {
 	const LANG_OVERRIDE = 'lang_override';
 
 	/**
+	 * UI option, custom css, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string CUSTOM_CSS The key for UI option.
+	 */
+	const CUSTOM_CSS = 'custom_css';
+
+	/**
 	 * Get the plugin instance.
 	 *
 	 * Gets the singleton of the plugin.

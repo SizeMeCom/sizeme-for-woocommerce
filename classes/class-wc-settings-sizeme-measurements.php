@@ -193,6 +193,12 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 				'id'      => WC_SizeMe_Measurements::LANG_OVERRIDE,
 			),
 			array(
+				'title'   => __( 'Custom styles', 'sizeme' ),
+				'type'    => 'textarea',
+				'default' => get_option( WC_SizeMe_Measurements::CUSTOM_CSS, '' ),
+				'id'      => WC_SizeMe_Measurements::CUSTOM_CSS,
+			),
+			array(
 				'type' => 'sectionend',
 				'id'   => 'ui_options',
 			),

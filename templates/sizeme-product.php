@@ -71,3 +71,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	};
 	//]]>
 </script>
+
+<?php
+// write possible custom css (placement questionable)
+$css = trim( $sizeme->get_ui_option( WC_SizeMe_Measurements::CUSTOM_CSS, '' ) );
+if ( !empty($css) ) echo '<style type="text/css">' . esc_js( $css ) . '</style>'.PHP_EOL;
+
