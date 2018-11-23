@@ -145,6 +145,16 @@ class WC_SizeMe_Measurements {
 	const INVOKE_ELEMENT = 'invoke_element';
 
 	/**
+	 * UI option, size selector type, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string SIZE_SELECTION_TYPE The key for UI option.
+	 */
+	const SIZE_SELECTION_TYPE = 'size_selection_type';
+
+
+	/**
 	 * UI option, add to cart element, used in settings.
 	 *
 	 * @since 1.0.0

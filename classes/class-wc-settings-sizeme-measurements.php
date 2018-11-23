@@ -163,6 +163,12 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 				'id'      => WC_SizeMe_Measurements::INVOKE_ELEMENT,
 			),
 			array(
+				'title'   => __( 'Size selection element', 'sizeme' ),
+				'type'    => 'text',
+				'default' => get_option( WC_SizeMe_Measurements::SIZE_SELECTION_TYPE, '' ),
+				'id'      => WC_SizeMe_Measurements::SIZE_SELECTION_TYPE,
+			),
+			array(
 				'title'   => __( 'Add to cart element', 'sizeme' ),
 				'type'    => 'text',
 				'default' => get_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ),
