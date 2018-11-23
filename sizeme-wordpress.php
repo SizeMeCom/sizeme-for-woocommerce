@@ -246,8 +246,10 @@ class WC_SizeMe_Measurements {
 		// Get the product object, and make sure it is a variable product.
 		$product = wc_get_product( $post );
 		if ( $product instanceof WC_Product_Variable ) {
-			wp_enqueue_script( 'sizeme_deps_js', 'http://sizeme.com/2.1/js/sizeme-woocommerce-with-deps.min.js' );
-			wp_enqueue_style( 'sizeme_css', 'http://sizeme.com/2.1/css/sizeme-woocommerce.min.css' );
+			wp_enqueue_style( 'sizeme_css', '//sizeme.com/3.0/sizeme-styles.css' );
+			wp_enqueue_script( 'sizeme_js_manifest', '//sizeme.com/3.0/sizeme-manifest.js' );
+			wp_enqueue_script( 'sizeme_js_vendor', '//sizeme.com/3.0/sizeme-vendor.js' );
+			wp_enqueue_script( 'sizeme_js', '//sizeme.com/3.0/sizeme.js' );
 		}
 	}
 
