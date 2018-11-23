@@ -47,13 +47,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	sizeme_options.uiOptions.addToCartEvent = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
 	sizeme_options.uiOptions.lang = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::LANG_OVERRIDE, '' ) ); ?>";
 	
+	<?php
 	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
-	/*
-	if (trim($uiOptions['additional_translations'])) {
-		echo 'sizeme_options.additionalTranslations = '.$this->jsQuoteEscape(trim($uiOptions['additional_translations'])).';'.PHP_EOL;
-	}
-	*/
-
+	$trans = trim( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADDITIONAL_TRANSLATIONS, '' ) );
+	if ( !empty($trans) ) echo 'sizeme_options.additionalTranslations = "' . esc_js( $trans ) . '";'.PHP_EOL;
+	?>
 
 	var sizeme_product = {
 		name: "<?php echo esc_js( $product->get_formatted_name() ); ?>",

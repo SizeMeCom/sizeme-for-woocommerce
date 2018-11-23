@@ -125,7 +125,7 @@ class WC_SizeMe_Measurements {
 	 * @var string SERVICE_STATUS_ID The key for the service status.
 	 */
 	const SERVICE_STATUS_ID = 'service_status';
-	
+
 	/**
 	 * UI option, API key, used in conversations with the SizeMe Shop API
 	 *
@@ -197,6 +197,15 @@ class WC_SizeMe_Measurements {
 	 * @var string CUSTOM_CSS The key for UI option.
 	 */
 	const CUSTOM_CSS = 'custom_css';
+
+	/**
+	 * UI option, additional translations, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string ADDITIONAL_TRANSLATIONS The key for UI option.
+	 */
+	const ADDITIONAL_TRANSLATIONS = 'additional_translations';
 
 	/**
 	 * Get the plugin instance.
