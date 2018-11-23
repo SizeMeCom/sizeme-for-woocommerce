@@ -47,11 +47,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	sizeme_UI_options[ 'addToCartElement' ] = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ) ); ?>";
 	sizeme_UI_options[ 'addToCartEvent' ]   = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
 
-	var size_selection = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::SIZE_SELECTION_CONTAINER_ELEMENT, '' ) ); ?>";
-	if (size_selection !== "") {
-		sizeme_UI_options[ 'sizeSelectionContainer' ] = size_selection;
-	}
-
 	var sizeme_product = {
 		name: "<?php echo esc_js( $product->get_formatted_name() ); ?>",
 		item: new SizeMe.Item(<?php echo '"' . esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_TYPE ) ) . '", '

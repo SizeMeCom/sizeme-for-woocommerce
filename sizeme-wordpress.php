@@ -153,7 +153,6 @@ class WC_SizeMe_Measurements {
 	 */
 	const SIZE_SELECTION_TYPE = 'size_selection_type';
 
-
 	/**
 	 * UI option, add to cart element, used in settings.
 	 *
@@ -171,15 +170,6 @@ class WC_SizeMe_Measurements {
 	 * @var string ADD_TO_CART_EVENT The key for UI option.
 	 */
 	const ADD_TO_CART_EVENT = 'add_to_cart_event';
-
-	/**
-	 * UI option, size selection container, used in settings.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string SIZE_SELECTION_CONTAINER_ELEMENT The key for UI option.
-	 */
-	const SIZE_SELECTION_CONTAINER_ELEMENT = 'size_selection_container_element';
 
 	/**
 	 * Get the plugin instance.

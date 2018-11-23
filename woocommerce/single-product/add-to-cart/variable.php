@@ -61,12 +61,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 				$product->get_variation_default_attribute( $attribute_name ); // Input var okay.
 
 				if ( $sizeme->is_size_attribute( $product, $attribute_name ) && ! $size_set ) {
-					$class          = 'sizeme-selection-container';
-					$class_override = $sizeme->get_ui_option( WC_SizeMe_Measurements::SIZE_SELECTION_CONTAINER_ELEMENT,
-					'' );
-					if ( ! empty( $class_override ) ) {
-						$class .= ' ' . $class_override;
-					}
+					$class = 'sizeme-selection-container';
 					$size_set = true;
 				} else {
 					$class = '';
