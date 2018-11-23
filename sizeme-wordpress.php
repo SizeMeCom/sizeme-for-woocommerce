@@ -3,16 +3,16 @@
  * SizeMe Measurements
  *
  * @package     SizeMe Measurements
- * @copyright   Copyright (c) 2015 SizeMe Ltd (http://www.sizeme.com/)
- * @since       1.0.0
+ * @copyright   Copyright (c) 2018 SizeMe Ltd (https://www.sizeme.com/)
+ * @since       2.0.0
  *
  * @wordpress-plugin
  * Plugin Name: SizeMe Measurements
  * Description: SizeMe is a service where you can store your physical measurements and use them at clothes retailers to
  * get size recommendations and personalized information on how the item will fit you.
- * Version:     1.0.0
+ * Version:     2.0.0
  * Author:      SizeMe Ltd
- * Author URI:  http://www.sizeme.com/
+ * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
  * License:     GPLv2 or later
  *
@@ -51,7 +51,7 @@ class WC_SizeMe_Measurements {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '2.0.0';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
