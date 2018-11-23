@@ -35,18 +35,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 	//<![CDATA[
 	var sizeme_options = {
 		service_status: "<?php echo esc_js( $sizeme->get_service_status() ); ?>",
+		pluginVersion: "WC-<?php echo WC_VERSION; ?>",
+		shopType: "woocommerce",
+		uiOptions: {}
 	};
 
-	if (typeof sizeme_UI_options === 'undefined') {
-		var sizeme_UI_options = {};
+	sizeme_options.uiOptions.appendContentTo = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::APPEND_CONTENT_TO, '' ) ); ?>";
+	sizeme_options.uiOptions.invokeElement = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::INVOKE_ELEMENT, '' ) ); ?>";
+	sizeme_options.uiOptions.sizeSelectorType = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::SIZE_SELECTION_TYPE, '' ) ); ?>";
+	sizeme_options.uiOptions.addToCartElement = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ) ); ?>";
+	sizeme_options.uiOptions.addToCartEvent = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
 	sizeme_options.uiOptions.lang = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::LANG_OVERRIDE, '' ) ); ?>";
+	
+	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
+	/*
+	if (trim($uiOptions['additional_translations'])) {
+		echo 'sizeme_options.additionalTranslations = '.$this->jsQuoteEscape(trim($uiOptions['additional_translations'])).';'.PHP_EOL;
 	}
+	*/
 
-	sizeme_UI_options[ 'appendContentTo' ]  = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::APPEND_CONTENT_TO, '' ) ); ?>";
-	sizeme_UI_options[ 'invokeElement' ]  = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::INVOKE_ELEMENT, '' ) ); ?>";
-	sizeme_UI_options[ 'sizeSelectorType' ]  = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::SIZE_SELECTION_TYPE, '' ) ); ?>";
-	sizeme_UI_options[ 'addToCartElement' ] = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ) ); ?>";
-	sizeme_UI_options[ 'addToCartEvent' ]   = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
 
 	var sizeme_product = {
 		name: "<?php echo esc_js( $product->get_formatted_name() ); ?>",
