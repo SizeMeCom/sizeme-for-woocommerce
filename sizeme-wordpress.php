@@ -136,15 +136,6 @@ class WC_SizeMe_Measurements {
 	const APPEND_CONTENT_TO = 'append_content_to';
 
 	/**
-	 * UI option, append splash to element, used in settings.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string APPEND_SPLASH_TO The key for UI option.
-	 */
-	const APPEND_SPLASH_TO = 'append_splash_to';
-
-	/**
 	 * UI option, add to cart element, used in settings.
 	 *
 	 * @since 1.0.0
