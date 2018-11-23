@@ -125,6 +125,12 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 				'id'      => WC_SizeMe_Measurements::SERVICE_STATUS_ID,
 			),
 			array(
+				'title'   => __( 'API key', 'sizeme' ),
+				'type'    => 'text',
+				'default' => get_option( WC_SizeMe_Measurements::API_KEY, '' ),
+				'id'      => WC_SizeMe_Measurements::API_KEY,
+			),
+			array(
 				'type' => 'sectionend',
 				'id'   => 'general_settings',
 			),

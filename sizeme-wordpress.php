@@ -125,6 +125,15 @@ class WC_SizeMe_Measurements {
 	 * @var string SERVICE_STATUS_ID The key for the service status.
 	 */
 	const SERVICE_STATUS_ID = 'service_status';
+	
+	/**
+	 * UI option, API key, used in conversations with the SizeMe Shop API
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string API_KEY The key for the Key!
+	 */
+	const API_KEY = 'api_key';
 
 	/**
 	 * UI option, append content to element, used in settings.
