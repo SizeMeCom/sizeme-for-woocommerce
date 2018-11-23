@@ -39,6 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	if (typeof sizeme_UI_options === 'undefined') {
 		var sizeme_UI_options = {};
+	sizeme_options.uiOptions.lang = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::LANG_OVERRIDE, '' ) ); ?>";
 	}
 
 	sizeme_UI_options[ 'appendContentTo' ]  = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::APPEND_CONTENT_TO, '' ) ); ?>";

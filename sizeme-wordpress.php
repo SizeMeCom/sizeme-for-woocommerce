@@ -181,6 +181,15 @@ class WC_SizeMe_Measurements {
 	const ADD_TO_CART_EVENT = 'add_to_cart_event';
 
 	/**
+	 * UI option, lang override, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string LANG_OVERRIDE The key for UI option.
+	 */
+	const LANG_OVERRIDE = 'lang_override';
+
+	/**
 	 * Get the plugin instance.
 	 *
 	 * Gets the singleton of the plugin.

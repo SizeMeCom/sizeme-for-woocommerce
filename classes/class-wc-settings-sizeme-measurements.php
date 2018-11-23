@@ -187,6 +187,12 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 				'id'      => WC_SizeMe_Measurements::ADD_TO_CART_EVENT,
 			),
 			array(
+				'title'   => __( 'Language code override', 'sizeme' ),
+				'type'    => 'text',
+				'default' => get_option( WC_SizeMe_Measurements::LANG_OVERRIDE, '' ),
+				'id'      => WC_SizeMe_Measurements::LANG_OVERRIDE,
+			),
+			array(
 				'type' => 'sectionend',
 				'id'   => 'ui_options',
 			),
