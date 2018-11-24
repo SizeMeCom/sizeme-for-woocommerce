@@ -547,7 +547,7 @@ class WC_SizeMe_Measurements {
             'buyer' => array(
                 'emailHash' => md5( strtolower( $order->get_billing_email() ) ),
             ),
-            'createdAt' => $order->get_date_created()->__toString(),
+            'createdAt' => $order->get_date_created()->date('Y-m-d H:i:s'),
             'purchasedItems' => array(),
         );
 
@@ -557,7 +557,7 @@ class WC_SizeMe_Measurements {
                 'SKU' => $product->get_sku(),
                 'quantity' => (int)$item->get_quantity(),
                 'name' => $item->get_name(),
-                'unitPriceInclTax' => round( $order->get_item_total( $item, true ), 2 ),
+                'unitPriceInclTax' => round( wc_get_price_including_tax( $product ), 2 ),
                 'finalPriceExclTax' => round( $order->get_line_total( $item, false ), 2),
                 'priceCurrencyCode' => strtoupper( get_woocommerce_currency() ),
             );
