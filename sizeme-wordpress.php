@@ -8,8 +8,7 @@
  *
  * @wordpress-plugin
  * Plugin Name: SizeMe Measurements
- * Description: SizeMe is a service where you can store your physical measurements and use them at clothes retailers to
- * get size recommendations and personalized information on how the item will fit you.
+ * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
  * Version:     2.0.0
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
@@ -274,34 +273,10 @@ class WC_SizeMe_Measurements {
 		$product = wc_get_product( $post );
 		if ( $product instanceof WC_Product_Variable ) {
 			wp_enqueue_style( 'sizeme_css', '//sizeme.com/3.0/sizeme-styles.css' );
-			wp_enqueue_script( 'sizeme_js_manifest', '//sizeme.com/3.0/sizeme-manifest.js' );
-			wp_enqueue_script( 'sizeme_js_vendor', '//sizeme.com/3.0/sizeme-vendor.js' );
-			wp_enqueue_script( 'sizeme_js', '//sizeme.com/3.0/sizeme.js' );
+			wp_enqueue_script( 'sizeme_js_manifest', '//sizeme.com/3.0/sizeme-manifest.js', '', '', true );
+			wp_enqueue_script( 'sizeme_js_vendor', '//sizeme.com/3.0/sizeme-vendor.js', '', '', true );
+			wp_enqueue_script( 'sizeme_js', '//sizeme.com/3.0/sizeme.js', '', '', true );
 		}
-	}
-
-	/**
-	 * Check if the given attribute is a SizeMe Measurement attribute.
-	 *
-	 * Checks against the pre-configured SizeMe attributes, if the given attribute is one of them.
-	 *
-	 * @since  1.0.0
-	 *
-	 * @param string $attribute_name The attribute name to check.
-	 *
-	 * @return bool True if it is a SizeMe attribute, false otherwise.
-	 */
-	public function is_sizeme_attribute( $attribute_name ) {
-		$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
-
-		if ( empty( $attribute_name ) || substr( $attribute_name, 0, strlen( '_sm_' ) ) !== '_sm_' ) {
-			return false;
-		}
-
-		// Remove the underscore from the attribute name, e.g. _sm_waist => sm_waist.
-		$attribute = substr( $attribute_name, 1 );
-
-		return in_array( $attribute, WC_SizeMe_Measurements_Attributes::get_attribute_names(), true );
 	}
 
 	/**
@@ -335,49 +310,20 @@ class WC_SizeMe_Measurements {
 	}
 
 	/**
-	 * Returns a map of SizeMe attribute names with their corresponding values.
+	 * Returns a list of variation product skus along with the size attribute value.
 	 *
-	 * The map can be directly converted into and JS SizeMe product item in the
-	 * view file.
-	 *
-	 * Format:
-	 *
-	 *      array(
-	 *          "chest"              => 530,
-	 *          "waist"              => 510,
-	 *          "sleeve"             => 220,
-	 *          "sleeve_top_width"   => 208,
-	 *          "wrist_width"        => 175,
-	 *          "underbust"          => 0,
-	 *          "neck_opening_width" => 0,
-	 *          "shoulder_width"     => 126,
-	 *          "front_height"       => 720,
-	 *          "pant_waist"         => 0,
-	 *          "hips"               => 510,
-	 *          "inseam"             => 0,
-	 *          "outseam"            => 0,
-	 *          "thigh_width"        => 0,
-	 *          "knee_width"         => 0,
-	 *          "calf_width"         => 0,
-	 *          "pant_sleeve_width"  => 0,
-	 *          "shoe_inside_length" => 0,
-	 *          "shoe_inside_width"  => 0,
-	 *          "hat_width"          => 0,
-	 *          "hood_height"        => 0,
-	 *      )
-	 *
-	 * @since  1.0.0
+	 * @since  2.0.0
 	 *
 	 * @param WC_Product_Variable $product The product.
 	 *
-	 * @return array The attribute map, or empty array if not correct product.
+	 * @return array attribute as key and sku as value
 	 */
-	public function get_variation_sizeme_attributes( WC_Product_Variable $product ) {
+	public function get_variation_sizeme_skus( WC_Product_Variable $product ) {
 
 		if ( is_product() ) {
 			// Only for variable products.
 			if ( $product instanceof WC_Product_Variable ) {
-				return $this->load_attributes( $product );
+				return $this->load_skus( $product );
 			}
 		}
 
@@ -385,22 +331,24 @@ class WC_SizeMe_Measurements {
 	}
 
 	/**
-	 * Load the SizeMe Measurements attributes.
+	 * Load the SizeMe Measurements skus.
 	 *
-	 * Loads the SizeMe attributes in the attributes array.
-	 *
-	 * @since  1.0.0
+	 * @since  2.0.0
 	 * @access protected
 	 *
 	 * @param WC_Product_Variable $product The product.
 	 *
-	 * @return array The attributes.
+	 * @return array The skus.
 	 */
-	protected function load_attributes( WC_Product_Variable $product ) {
-		if ( empty( self::$attributes[ $product->id ] ) ) {
+	protected function load_skus( WC_Product_Variable $product ) {
+		if ( empty( self::$attributes[ $product->get_id() ] ) ) {
+
 			$variations = $product->get_available_variations();
+
 			foreach ( $variations as $variation ) {
+
 				$variation_meta = get_post_meta( $variation['variation_id'] );
+
 				if ( is_array( $variation_meta ) && count( $variation_meta ) > 0 ) {
 					$size_attribute = $this->get_size_attribute( $product );
 					foreach ( $variation_meta as $attribute => $value ) {
@@ -408,24 +356,22 @@ class WC_SizeMe_Measurements {
 							continue;
 						}
 
-						if ( $this->is_sizeme_attribute( $attribute ) ) {
-							// Remove '_sm_' from the attribute, as we only want "chest", "waist" etc.
-							$attribute = substr( $attribute, strlen( '_sm_' ), strlen( $attribute ) );
-							if ( isset( $variation['attributes'][ 'attribute_pa_' . $size_attribute ] ) ) {
-								// The attribute code value here is the attribute_pa_size, which is "small","extra-small","large", or whatever the slug is.
-								$attribute_code = $variation['attributes'][ 'attribute_pa_' . $size_attribute ];
-								if ( ! isset( self::$attributes[ $product->id ][ $attribute_code ][ $attribute ] ) ) {
-									self::$attributes[ $product->id ][ $attribute_code ][ $attribute ] = $value[0];
-								}
+						if ( isset( $variation['attributes'][ 'attribute_pa_' . $size_attribute ] ) ) {
+							// The attribute code value here is the attribute_pa_size, which is "small","extra-small","large", or whatever the slug is.
+							$attribute_code = $variation['attributes'][ 'attribute_pa_' . $size_attribute ];
+							if ( ! isset( self::$attributes[ $product->get_id() ][ $attribute_code ] ) ) {
+								self::$attributes[ $product->get_id() ][ $attribute_code ] = (string)$variation[ 'sku' ];
 							}
 						}
+
 					}
 				}
 			}
 		}
 
-		return self::$attributes[ $product->id ];
+		return self::$attributes[ $product->get_id() ];
 	}
+
 
 	/**
 	 * Get the configured size attribute(s).
@@ -472,21 +418,6 @@ class WC_SizeMe_Measurements {
 		return in_array( substr( $attribute, strlen( 'pa_' ) ), $size_attributes, true );
 	}
 
-	/**
-	 * Get the smi_item_* attribute for the product.
-	 *
-	 * Returns the set value for the smi_item_* attributes for the product.
-	 *
-	 * @param WC_Product_Variable $product The product variable.
-	 * @param string              $type    The type to get.
-	 *
-	 * @return string|null The value for the smi_item_* or null if not found.
-	 */
-	public function get_smi_item( WC_Product_Variable $product, $type ) {
-		$post_meta = get_post_meta( $product->id );
-
-		return isset( $post_meta[ '_' . $type ][0] ) ? $post_meta[ '_' . $type ][0] : null;
-	}
 
 	/**
 	 * Add the SizeMe Measurement scripts to the product page.
@@ -500,7 +431,6 @@ class WC_SizeMe_Measurements {
 			global $product;
 			// Make sure we only render for variable products.
 			if ( $product instanceof WC_Product_Variable ) {
-				$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
 				$this->render( 'sizeme-product', array( 'product' => $product, 'sizeme' => $this ) );
 			}
 		}
@@ -601,152 +531,7 @@ class WC_SizeMe_Measurements {
 	 */
 	protected function init_admin() {
 		add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_setting_page' ) );
-		add_filter( 'woocommerce_product_data_tabs', array( $this, 'product_data_tabs' ) );
-
-		add_action( 'woocommerce_save_product_variation', array( $this, 'save_product_variation' ), 10, 2 );
-		add_action( 'woocommerce_product_after_variable_attributes',
-		array( $this, 'product_after_variable_attributes' ), 10, 3 );
-		add_action( 'woocommerce_product_data_panels', array( $this, 'product_data_panels' ) );
-		add_action( 'woocommerce_process_product_meta_variable', array( $this, 'process_product_meta_variable' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-	}
-
-	/**
-	 * Save product variation.
-	 *
-	 * Saves the SizeMe attributes for the given variation.
-	 *
-	 * @param int $variation_id The variation id.
-	 * @param int $i            The "loop", e.g. current variation.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void If nonce verification fails.
-	 */
-	public function save_product_variation( $variation_id, $i ) {
-		if ( empty( $_POST['sizeme_product_nonce'] ) || ( ! wp_verify_nonce( wp_unslash( $_POST['sizeme_product_nonce'] ), // Input var okay.
-		'sizeme_save_product_variation' ) )
-		) {
-			return;
-		}
-		$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
-		foreach ( WC_SizeMe_Measurements_Attributes::get_attribute_names() as $attribute_name ) {
-			if ( isset( $_POST[ 'variable_' . $attribute_name ][ $i ] ) ) { // Input var okay.
-				$value = sanitize_text_field( wp_unslash( $_POST[ 'variable_' . $attribute_name ][ $i ] ) ); // Input var okay.
-				// Allow value to be reset to empty.
-				if ( '' === $value || intval( $value ) > 0 ) {
-					update_post_meta( $variation_id, '_' . $attribute_name, $value );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Render SizeMe attributes.
-	 *
-	 * Renders the SizeMe attributes on the product data section in the variations tab.
-	 *
-	 * @param int     $loop           The "loop" in which we are, e.g. current variation.
-	 * @param array   $variation_data The variation data.
-	 * @param WP_Post $variation      The current variation.
-	 *
-	 * @since 1.0.0
-	 */
-	public function product_after_variable_attributes( $loop, $variation_data, $variation ) {
-		$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
-
-		$variation_meta = get_post_meta( $variation->ID );
-		$data           = array();
-
-		// Build the data for the view.
-		foreach ( WC_SizeMe_Measurements_Attributes::get_attribute_names() as $attribute_name ) {
-			// Skip smi_* attributes.
-			if ( substr( $attribute_name, 0, strlen( 'smi_' ) ) === 'smi_' ) {
-				continue;
-			}
-
-			$value = null;
-			if ( isset( $variation_meta[ '_' . $attribute_name ][0] ) ) {
-				$value = $variation_meta[ '_' . $attribute_name ][0];
-			}
-
-			$label = ucfirst( str_replace( '_', ' ', substr( $attribute_name, strlen( 'sm_' ) ) ) );
-
-			$data[ '_' . $attribute_name ] = array(
-				'label' => __( $label, 'sizeme' ),
-				'name'  => 'variable_' . $attribute_name . '[' . $loop . ']',
-				'value' => $value,
-			);
-		}
-
-		// Print out the nonce field.
-		wp_nonce_field( 'sizeme_save_product_variation', 'sizeme_product_nonce' );
-
-		$this->render( 'sizeme-product-variation', array( 'attribute_data' => $data ) );
-	}
-
-	/**
-	 * Add product data tab.
-	 *
-	 * Adds a new SizeMe tab to the product data.
-	 *
-	 * @param array $tabs The current tabs.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array The tabs.
-	 */
-	public function product_data_tabs( $tabs ) {
-		$tabs['sizeme'] = array(
-			'label'  => __( 'SizeMe', 'sizeme' ),
-			'target' => 'sizeme_product_data',
-			'class'  => array( 'hide_if_grouped', 'show_if_variable' ),
-		);
-
-		return $tabs;
-	}
-
-	/**
-	 * Process product meta.
-	 *
-	 * Handles saving of the SizeMe smi_item_* attributes.
-	 *
-	 * @param int $post_id The post id.
-	 *
-	 * @since 1.0.0
-	 */
-	public function process_product_meta_variable( $post_id ) {
-		if ( empty( $_POST['sizeme_data_nonce'] ) || ( ! wp_verify_nonce( wp_unslash( $_POST['sizeme_data_nonce'] ), // Input var okay.
-		'sizeme_product_data_panels' ) )
-		) {
-			return;
-		}
-		$attributes = array(
-			'_smi_item_type',
-			'_smi_item_layer',
-			'_smi_item_thickness',
-			'_smi_item_stretch',
-		);
-		foreach ( $attributes as $attribute ) {
-			if ( isset( $_POST[ $attribute ] ) ) { // Input var okay.
-				$value = sanitize_text_field( wp_unslash( $_POST[ $attribute ] ) ); // Input var okay.
-				if ( '' === $value || intval( $value ) > 0 ) {
-					update_post_meta( $post_id, $attribute, $value );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Render data panels
-	 *
-	 * Renders the content of the SizeMe panel in the product administration.
-	 *
-	 * @since 1.0.0
-	 */
-	public function product_data_panels() {
-		wp_nonce_field( 'sizeme_product_data_panels', 'sizeme_data_nonce' );
-		$this->render( 'sizeme-data-panels' );
 	}
 
 	/**

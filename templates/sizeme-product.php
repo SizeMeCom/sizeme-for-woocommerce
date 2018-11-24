@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	sizeme_options.uiOptions.addToCartElement = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ) ); ?>";
 	sizeme_options.uiOptions.addToCartEvent = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
 	sizeme_options.uiOptions.lang = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::LANG_OVERRIDE, '' ) ); ?>";
-	
+
 	<?php
 	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
 	$trans = trim( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADDITIONAL_TRANSLATIONS, '' ) );
@@ -55,17 +55,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	var sizeme_product = {
 		name: "<?php echo esc_js( $product->get_formatted_name() ); ?>",
-		item: new SizeMe.Item(<?php echo '"' . esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_TYPE ) ) . '", '
-			. esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_LAYER ) ) . ', '
-			. esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_THICKNESS ) ) . ', '
-		. esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_STRETCH ) ); ?>)
-		<?php foreach ( $sizeme->get_variation_sizeme_attributes( $product ) as $size_attribute => $attributes ) : ?>
-			.addSize("<?php echo esc_js( $size_attribute ); ?>", new SizeMe.Map()
-				<?php foreach ( $attributes as $name => $value ) : ?>
-				.addItem("<?php echo esc_js( $name ); ?>", <?php echo (int) $value; ?>)
-				<?php endforeach; ?>
-			)
-		<?php endforeach; ?>
+		SKU: "<?php echo esc_js( $product->get_SKU() ); ?>",
+		item: {
+			<?php foreach ( $sizeme->get_variation_sizeme_skus( $product ) as $size_attribute => $sku ) : ?>
+			"<?php echo esc_js( strtoupper( $sku ) ); ?>" : "<?php echo esc_js( $size_attribute ); ?>",
+			<?php endforeach; ?>
+		}
 	};
 	//]]>
 </script>

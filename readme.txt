@@ -17,7 +17,7 @@ SizeMe is a service where you can store your physical measurements and use them
 at clothes retailers to get size recommendations and personalized information on
 how the item will fit you. So basically it's like magic.
 
-[http://www.sizeme.com](http://www.sizeme.com/)
+[https://www.sizeme.com](https://www.sizeme.com/)
 
 == Installation ==
 To install and take into use the SizeMe Measurements plugin, follow the instructions below.
@@ -97,6 +97,9 @@ To install and take into use the SizeMe Measurements plugin, follow the instruct
     Click "Save changes" to save the updated values.
 
 == Changelog ==
+
+= 2.0.0 =
+* Rewrite for SizeMe v3.0
 
 = 1.0.0 =
 * Initial release.

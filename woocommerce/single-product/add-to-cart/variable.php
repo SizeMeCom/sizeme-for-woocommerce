@@ -82,6 +82,8 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 			<?php endforeach; ?>
 			</tbody>
 		</table>
+		
+		<div class="sizeme-container"></div>
 
 		<div class="single_variation_wrap">
 			<?php
