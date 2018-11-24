@@ -39,6 +39,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		shopType: "woocommerce",
 		uiOptions: {}
 	};
+	
+	<?php
+	// TEST MODE
+	if ( $sizeme->is_service_test() ) {
+		echo 'sizeme_options.debugState = "true";'.PHP_EOL;
+	}
+	?>
 
 	sizeme_options.uiOptions.appendContentTo = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::APPEND_CONTENT_TO, '' ) ); ?>";
 	sizeme_options.uiOptions.invokeElement = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::INVOKE_ELEMENT, '' ) ); ?>";
@@ -50,7 +57,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php
 	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
 	$trans = trim( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADDITIONAL_TRANSLATIONS, '' ) );
-	if ( !empty($trans) ) echo 'sizeme_options.additionalTranslations = "' . esc_js( $trans ) . '";'.PHP_EOL;
+	if ( !empty($trans) ) echo 'sizeme_options.additionalTranslations = {' . trim( $trans ) . '};'.PHP_EOL;
 	?>
 
 	var sizeme_product = {
@@ -68,5 +75,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php
 // write possible custom css (placement questionable)
 $css = trim( $sizeme->get_ui_option( WC_SizeMe_Measurements::CUSTOM_CSS, '' ) );
-if ( !empty($css) ) echo '<style type="text/css">' . esc_js( $css ) . '</style>'.PHP_EOL;
+if ( !empty($css) ) echo '<style type="text/css">' . trim( $css ) . '</style>'.PHP_EOL;
 

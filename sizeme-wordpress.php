@@ -310,6 +310,20 @@ class WC_SizeMe_Measurements {
 	}
 
 	/**
+	 * Check if service is in TEST mode
+	 *
+	 * Reads value and returns if true or false
+	 *
+	 * @since  2.0.0
+	 *
+	 *
+	 * @return bool Test status 
+	 */
+	public function is_service_test() {
+		return ( $this->get_service_status() == 'test' );
+	}
+	
+	/**
 	 * Returns a list of variation product skus along with the size attribute value.
 	 *
 	 * @since  2.0.0
