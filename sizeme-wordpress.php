@@ -531,9 +531,14 @@ class WC_SizeMe_Measurements {
     public function send_order_info($order_id)
     {
 		$order = New WC_Order( $order_id );
-		
+
 		if (!$order) return false;
-		
+
+		// check if this has already been sent to SizeMe
+		if( get_post_meta( $order_id, 'delivery_order_id', true ) ) {
+			return false;
+		}
+
         $arr = array(
             'orderNumber' => $order_id,
             'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
@@ -545,7 +550,7 @@ class WC_SizeMe_Measurements {
             'createdAt' => $order->get_date_created()->__toString(),
             'purchasedItems' => array(),
         );
-		
+
         foreach ($order->get_items() as $item) {
 			$product = $item->get_product();
             $arr['purchasedItems'][] = array(
@@ -557,13 +562,14 @@ class WC_SizeMe_Measurements {
                 'priceCurrencyCode' => strtoupper( get_woocommerce_currency() ),
             );
         }
-		
+
 		if ( $this->is_service_test() ) $address = self::API_CONTEXT_ADDRESS_TEST . self::API_SEND_ADD_TO_CART;
 
-		return $this->send(
-			$address,
-			json_encode($arr)
-		);
+		if ( $this->send( $address, json_encode($arr) ) ) {
+			update_post_meta( $order_id, 'delivery_order_id', esc_attr( $order_id ) );
+		}
+
+		return false;
 
     }
 
