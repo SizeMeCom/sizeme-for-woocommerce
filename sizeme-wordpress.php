@@ -512,7 +512,7 @@ class WC_SizeMe_Measurements {
 		$address = self::API_CONTEXT_ADDRESS . self::API_SEND_ADD_TO_CART;
 		if ( $this->is_service_test() ) $address = self::API_CONTEXT_ADDRESS_TEST . self::API_SEND_ADD_TO_CART;
 
-		$this->send(
+		return $this->send(
 			$address,
 			json_encode($arr)
 		);
@@ -520,7 +520,7 @@ class WC_SizeMe_Measurements {
     }
 
     /**
-	 * Hook callback function for add to cart events
+	 * Hook callback function for order events
 	 *
 	 * Gathers necessary data and sends the info to SizeMe
 	 *
@@ -528,23 +528,39 @@ class WC_SizeMe_Measurements {
 	 *
      * @return boolean success
      */
-    public function send_order_info($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data)
+    public function send_order_info($order_id)
     {
-		$parent_product = New WC_Product( $product_id );
-		$child_product = New WC_Product_Variation( $variation_id );
-
+		$order = New WC_Order( $order_id );
+		
+		if (!$order) return false;
+		
         $arr = array(
-            'SKU' => $child_product->get_sku(),
-            'quantity' => (int)$quantity,
-            'name' => $parent_product->get_name(),
+            'orderNumber' => $order_id,
             'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
-            'actionIdentifier' => $_COOKIE[ self::COOKIE_ACTION ]
+            'orderStatusCode' => (int)200,
+            'orderStatusLabel' => $order->get_status(),
+            'buyer' => array(
+                'emailHash' => md5( strtolower( $order->get_billing_email() ) ),
+            ),
+            'createdAt' => $order->get_date_created()->__toString(),
+            'purchasedItems' => array(),
         );
-
-		$address = self::API_CONTEXT_ADDRESS . self::API_SEND_ADD_TO_CART;
+		
+        foreach ($order->get_items() as $item) {
+			$product = $item->get_product();
+            $arr['purchasedItems'][] = array(
+                'SKU' => $product->get_sku(),
+                'quantity' => (int)$item->get_quantity(),
+                'name' => $item->get_name(),
+                'unitPriceInclTax' => round( $order->get_item_total( $item, true ), 2 ),
+                'finalPriceExclTax' => round( $order->get_line_total( $item, false ), 2),
+                'priceCurrencyCode' => strtoupper( get_woocommerce_currency() ),
+            );
+        }
+		
 		if ( $this->is_service_test() ) $address = self::API_CONTEXT_ADDRESS_TEST . self::API_SEND_ADD_TO_CART;
 
-		$this->send(
+		return $this->send(
 			$address,
 			json_encode($arr)
 		);
@@ -652,6 +668,7 @@ class WC_SizeMe_Measurements {
 		add_action( 'woocommerce_before_single_product', array( $this, 'add_sizeme_scripts' ), 20, 0 );
 
 		add_action( 'woocommerce_add_to_cart', array( $this, 'send_add_to_cart_info' ), 10, 6 );
+		add_action( 'woocommerce_thankyou', array( $this, 'send_order_info' ), 10, 1 );
 
 		add_filter( 'woocommerce_locate_template', array( $this, 'locate_template' ), 10, 3 );
 	}
