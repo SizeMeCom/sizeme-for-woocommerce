@@ -206,6 +206,26 @@ class WC_SizeMe_Measurements {
 	 */
 	const ADDITIONAL_TRANSLATIONS = 'additional_translations';
 
+    /**
+     * Info related to SizeMe API requests
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string API_CONTEXT_ADDRESS Where to send API stuff
+	 * @var string API_CONTEXT_ADDRESS_TEST Where to send API stuff if in test mode
+	 * @var string API_SEND_ORDER_INFO Address for orders
+	 * @var string API_SEND_ADD_TO_CART Address for add to carts
+	 * @var string COOKIE_SESSION Session cookie
+	 * @var string COOKIE_ACTION SizeMe action jackson cookie
+
+     */
+    const API_CONTEXT_ADDRESS   = 'https://sizeme.com';
+    const API_CONTEXT_ADDRESS_TEST   = 'https://test.sizeme.com';
+    const API_SEND_ORDER_INFO   = '/shop-api/sendOrderComplete';
+    const API_SEND_ADD_TO_CART  = '/shop-api/sendAddToCart';
+    const COOKIE_SESSION        = 'wcsid';       // WC specific
+    const COOKIE_ACTION         = 'sm_action';
+
 	/**
 	 * Get the plugin instance.
 	 *
@@ -317,12 +337,12 @@ class WC_SizeMe_Measurements {
 	 * @since  2.0.0
 	 *
 	 *
-	 * @return bool Test status 
+	 * @return bool Test status
 	 */
 	public function is_service_test() {
 		return ( $this->get_service_status() == 'test' );
 	}
-	
+
 	/**
 	 * Returns a list of variation product skus along with the size attribute value.
 	 *
@@ -432,6 +452,104 @@ class WC_SizeMe_Measurements {
 		return in_array( substr( $attribute, strlen( 'pa_' ) ), $size_attributes, true );
 	}
 
+    /**
+     * Sends the some data to SizeMe
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $address 		where to send the stuff
+	 * @param string $dataString	the json encoded data to send
+     *
+     * @return boolean success
+     */
+    public function send($address, $dataString)
+    {
+        $apiKey = get_option( self::API_KEY );
+
+		if ( !$apiKey ) return false;	// might as well fail if the key is missing
+
+        $ch = curl_init( $address );
+
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($dataString),
+            'X-Sizeme-Apikey: ' . $apiKey)
+        );
+
+        $result = curl_exec($ch);
+
+		if ( $this->is_service_test() ) error_log( sprintf( 'API message sent to %s, response %s', $address, print_r($result) ) );
+
+        return ($result !== false);
+    }
+
+    /**
+	 * Hook callback function for add to cart events
+	 *
+	 * Gathers necessary data and sends the info to SizeMe
+	 *
+	 * @since 2.0.0
+	 *
+     * @return boolean success
+     */
+    public function send_add_to_cart_info($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data)
+    {
+		$parent_product = New WC_Product( $product_id );
+		$child_product = New WC_Product_Variation( $variation_id );
+
+        $arr = array(
+            'SKU' => $child_product->get_sku(),
+            'quantity' => (int)$quantity,
+            'name' => $parent_product->get_name(),
+            'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
+            'actionIdentifier' => $_COOKIE[ self::COOKIE_ACTION ]
+        );
+
+		$address = self::API_CONTEXT_ADDRESS . self::API_SEND_ADD_TO_CART;
+		if ( $this->is_service_test() ) $address = self::API_CONTEXT_ADDRESS_TEST . self::API_SEND_ADD_TO_CART;
+
+		$this->send(
+			$address,
+			json_encode($arr)
+		);
+
+    }
+
+    /**
+	 * Hook callback function for add to cart events
+	 *
+	 * Gathers necessary data and sends the info to SizeMe
+	 *
+	 * @since 2.0.0
+	 *
+     * @return boolean success
+     */
+    public function send_order_info($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data)
+    {
+		$parent_product = New WC_Product( $product_id );
+		$child_product = New WC_Product_Variation( $variation_id );
+
+        $arr = array(
+            'SKU' => $child_product->get_sku(),
+            'quantity' => (int)$quantity,
+            'name' => $parent_product->get_name(),
+            'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
+            'actionIdentifier' => $_COOKIE[ self::COOKIE_ACTION ]
+        );
+
+		$address = self::API_CONTEXT_ADDRESS . self::API_SEND_ADD_TO_CART;
+		if ( $this->is_service_test() ) $address = self::API_CONTEXT_ADDRESS_TEST . self::API_SEND_ADD_TO_CART;
+
+		$this->send(
+			$address,
+			json_encode($arr)
+		);
+
+    }
 
 	/**
 	 * Add the SizeMe Measurement scripts to the product page.
@@ -532,6 +650,8 @@ class WC_SizeMe_Measurements {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'woocommerce_before_single_product', array( $this, 'add_sizeme_scripts' ), 20, 0 );
+
+		add_action( 'woocommerce_add_to_cart', array( $this, 'send_add_to_cart_info' ), 10, 6 );
 
 		add_filter( 'woocommerce_locate_template', array( $this, 'locate_template' ), 10, 3 );
 	}
