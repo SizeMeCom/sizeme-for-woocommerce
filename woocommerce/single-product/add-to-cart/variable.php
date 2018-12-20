@@ -9,8 +9,8 @@
  *
  * Last checked against WC version 3.4.1
  *
- * @see     WC_SizeMe_Measurements::locate_template
- * @package SizeMe Measurements
+ * @see     WC_SizeMe_for_WooCommerce::locate_template
+ * @package SizeMe for WooCommerce
  * @since   1.0.0
  *
  * @var array               $available_variations The available variations.
@@ -19,18 +19,18 @@
  */
 
 /**
- * SizeMe Measurements is free software: you can redistribute it and/or modify
+ * SizeMe for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * SizeMe Measurements is distributed in the hope that it will be useful,
+ * SizeMe for WooCommerce is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SizeMe Measurements. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ * along with SizeMe for WooCommerce. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $product;
 
-$sizeme = WC_SizeMe_Measurements::get_instance();
+$sizeme = WC_SizeMe_for_WooCommerce::get_instance();
 
 $attribute_keys = array_keys( $attributes );
 

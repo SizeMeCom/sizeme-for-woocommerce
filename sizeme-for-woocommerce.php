@@ -1,13 +1,13 @@
 <?php
 /**
- * SizeMe Measurements
+ * SizeMe for WooCommerce
  *
- * @package     SizeMe Measurements
- * @copyright   Copyright (c) 2018 SizeMe Ltd (https://www.sizeme.com/)
+ * @package     SizeMe for WooCommerce
+ * @copyright   Copyright (c) SizeMe Ltd (https://www.sizeme.com/)
  * @since       2.0.0
  *
  * @wordpress-plugin
- * Plugin Name: SizeMe Measurements
+ * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
  * Version:     2.0.0
  * Author:      SizeMe Ltd
@@ -15,18 +15,18 @@
  * Text Domain: sizeme
  * License:     GPLv2 or later
  *
- * SizeMe Measurements is free software: you can redistribute it and/or modify
+ * SizeMe for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * SizeMe Measurements is distributed in the hope that it will be useful,
+ * SizeMe for WooCommerce is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SizeMe Measurements. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ * along with SizeMe for WooCommerce. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,14 +34,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class WC_SizeMe_Measurements.
+ * Class WC_SizeMe_for_WooCommerce.
  *
  * Handles registering of CSS and JavaScript, initialization of the plugin.
  * Adds the settings page, checks for dependencies and handles installing, activating and uninstalling the plugin.
  *
  * @since 1.0.0
  */
-class WC_SizeMe_Measurements {
+class WC_SizeMe_for_WooCommerce {
 
 	/**
 	 * Plugin version, used for dependency checks.
@@ -76,7 +76,7 @@ class WC_SizeMe_Measurements {
 	 * @since  1.0.0
 	 * @access private
 	 *
-	 * @var WC_SizeMe_Measurements $instance The plugin instance.
+	 * @var WC_SizeMe_for_WooCommerce $instance The plugin instance.
 	 */
 	private static $instance = null;
 
@@ -242,11 +242,11 @@ class WC_SizeMe_Measurements {
 	 *
 	 * @since  1.0.0
 	 *
-	 * @return WC_SizeMe_Measurements The plugin instance.
+	 * @return WC_SizeMe_for_WooCommerce The plugin instance.
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
-			self::$instance = new WC_SizeMe_Measurements();
+			self::$instance = new WC_SizeMe_for_WooCommerce();
 		}
 
 		return self::$instance;
@@ -260,7 +260,7 @@ class WC_SizeMe_Measurements {
 	 * @since  1.0.0
 	 * @access private
 	 *
-	 * @return WC_SizeMe_Measurements The plugin instance.
+	 * @return WC_SizeMe_for_WooCommerce The plugin instance.
 	 */
 	private function __construct() {
 		$this->plugin_dir  = untrailingslashit( plugin_dir_path( __FILE__ ) );
@@ -389,7 +389,7 @@ class WC_SizeMe_Measurements {
 	}
 
 	/**
-	 * Load the SizeMe Measurements skus.
+	 * Load the SizeMe for WooCommerce skus.
 	 *
 	 * @since  2.0.0
 	 * @access protected
@@ -680,7 +680,7 @@ class WC_SizeMe_Measurements {
 	 * @return array The updated list of settings.
 	 */
 	public function add_setting_page( $settings ) {
-		$settings[] = require_once( 'classes/class-wc-settings-sizeme-measurements.php' );
+		$settings[] = require_once( 'classes/class-wc-settings-sizeme-for-woocommerce.php' );
 
 		return $settings;
 	}
@@ -767,7 +767,7 @@ class WC_SizeMe_Measurements {
 		if ( version_compare( $wp_version, self::MIN_WP_VERSION, '<' ) ) {
 			$error = sprintf(
 				__( 'Looks like you\'re running an older version of WordPress, you need to be running at least
-					WordPress %1$s to use WooCommerce SizeMe Measurements %2$s.' ),
+					WordPress %1$s to use WooCommerce SizeMe for WooCommerce %2$s.' ),
 				self::MIN_WP_VERSION,
 				self::VERSION
 			);
@@ -776,14 +776,14 @@ class WC_SizeMe_Measurements {
 		if ( ! defined( 'WOOCOMMERCE_VERSION' ) ) {
 			$error = sprintf(
 				__( 'Looks like you\'re not running any version of WooCommerce, you need to be running at least
-					WooCommerce %1$s to use WooCommerce SizeMe Measurements %2$s.' ),
+					WooCommerce %1$s to use WooCommerce SizeMe for WooCommerce %2$s.' ),
 				self::MIN_WC_VERSION,
 				self::VERSION
 			);
 		} else if ( version_compare( WOOCOMMERCE_VERSION, self::MIN_WC_VERSION, '<' ) ) {
 			$error = sprintf(
 				__( 'Looks like you\'re running an older version of WooCommerce, you need to be running at least
-					WooCommerce %1$s to use WooCommerce SizeMe Measurements %2$s.' ),
+					WooCommerce %1$s to use WooCommerce SizeMe for WooCommerce %2$s.' ),
 				self::MIN_WC_VERSION,
 				self::VERSION
 			);
@@ -841,4 +841,4 @@ class WC_SizeMe_Measurements {
 	}
 }
 
-add_action( 'plugins_loaded', array( WC_SizeMe_Measurements::get_instance(), 'init' ) );
+add_action( 'plugins_loaded', array( WC_SizeMe_for_WooCommerce::get_instance(), 'init' ) );

@@ -1,26 +1,26 @@
 <?php
 /**
- * SizeMe Measurements settings.
+ * SizeMe for WooCommerce settings.
  *
- * Adds a SizeMe measurements tab in the WooCommerce settings page.
+ * Adds a SizeMe tab in the WooCommerce settings page.
  *
- * @package SizeMe Measurements
+ * @package SizeMe for WooCommerce
  * @since   1.0.0
  */
 
 /**
- * SizeMe Measurements is free software: you can redistribute it and/or modify
+ * SizeMe for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * SizeMe Measurements is distributed in the hope that it will be useful,
+ * SizeMe for WooCommerce is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SizeMe Measurements. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ * along with SizeMe for WooCommerce. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,13 +28,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class WC_Settings_SizeMe_Measurements.
+ * Class WC_Settings_SizeMe_for_WooCommerce.
  *
- * Adds a SizeMe Measurements tab in the WooCommerce settings page.
+ * Adds a SizeMe tab in the WooCommerce settings page.
  *
  * @since 1.0.0
  */
-class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
+class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 
 	/**
 	 * Service is on.
@@ -92,8 +92,8 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 	 * @return WC_Settings_SizeMe_Measurements
 	 */
 	public function __construct() {
-		$this->id    = 'sizeme_measurements';
-		$this->label = __( 'SizeMe Measurements', 'sizeme' );
+		$this->id    = 'sizeme-for-woocommerce';
+		$this->label = __( 'SizeMe', 'sizeme-for-woocommerce' );
 
 		parent::__construct();
 	}
@@ -109,7 +109,7 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 	 */
 	public function get_sections() {
 		$sections = array(
-			'' => __( 'Settings', 'sizeme' ),
+			'' => __( 'Settings', 'sizeme-for-woocommerce' ),
 		);
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -128,39 +128,39 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 
 		$settings = array(
 			array(
-				'title' => __( 'General settings', 'sizeme' ),
+				'title' => __( 'General settings', 'sizeme-for-woocommerce' ),
 				'type'  => 'title',
 				'id'    => 'general_settings',
 			),
 			array(
-				'title'   => __( 'Service status', 'sizeme' ),
+				'title'   => __( 'Service status', 'sizeme-for-woocommerce' ),
 				'type'    => 'select',
 				'options' => array(
-					''                        => __( 'Select service status', 'sizeme' ),
+					''                        => __( 'Select service status', 'sizeme-for-woocommerce' ),
 					self::SERVICE_STATUS_TEST => 'Test',
 					self::SERVICE_STATUS_ON   => 'On',
 					self::SERVICE_STATUS_OFF  => 'Off',
 				),
-				'id'      => WC_SizeMe_Measurements::SERVICE_STATUS_ID,
+				'id'      => WC_SizeMe_for_WooCommerce::SERVICE_STATUS_ID,
 			),
 			array(
-				'title'   => __( 'API key', 'sizeme' ),
+				'title'   => __( 'API key', 'sizeme-for-woocommerce' ),
 				'type'    => 'text',
-				'default' => get_option( WC_SizeMe_Measurements::API_KEY, '' ),
-				'id'      => WC_SizeMe_Measurements::API_KEY,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::API_KEY, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::API_KEY,
 			),
 			array(
 				'type' => 'sectionend',
 				'id'   => 'general_settings',
 			),
 			array(
-				'title' => __( 'Attribute settings', 'sizeme' ),
+				'title' => __( 'Attribute settings', 'sizeme-for-woocommerce' ),
 				'type'  => 'title',
 				'id'    => 'attribute_settings',
 			),
 			array(
-				'title'   => __( 'Product Size Attributes', 'sizeme' ),
-				'desc'    => __( 'Select the attributes for sizes', 'sizeme' ),
+				'title'   => __( 'Product Size Attributes', 'sizeme-for-woocommerce' ),
+				'desc'    => __( 'Select the attributes for sizes', 'sizeme-for-woocommerce' ),
 				'type'    => 'multiselect',
 				'options' => self::load_size_attribute_options(),
 				'css'     => 'width: 150px; height: 150px;',
@@ -171,66 +171,66 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 				'id'   => 'attribute_settings',
 			),
 			array(
-				'title' => __( 'UI options', 'sizeme' ),
+				'title' => __( 'UI options', 'sizeme-for-woocommerce' ),
 				'type'  => 'title',
 				'id'    => 'ui_options',
 			),
 			array(
-				'title'   => __( 'Append content to element', 'sizeme' ),
+				'title'   => __( 'Append content to element', 'sizeme-for-woocommerce' ),
 				'type'    => 'text',
-				'default' => get_option( WC_SizeMe_Measurements::APPEND_CONTENT_TO, '' ),
-				'id'      => WC_SizeMe_Measurements::APPEND_CONTENT_TO,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::APPEND_CONTENT_TO, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::APPEND_CONTENT_TO,
 			),
 			array(
-				'title'   => __( 'Invoke element', 'sizeme' ),
+				'title'   => __( 'Invoke element', 'sizeme-for-woocommerce' ),
 				'type'    => 'text',
-				'default' => get_option( WC_SizeMe_Measurements::INVOKE_ELEMENT, '' ),
-				'id'      => WC_SizeMe_Measurements::INVOKE_ELEMENT,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT,
 			),
 			array(
-				'title'   => __( 'Size selection element', 'sizeme' ),
+				'title'   => __( 'Size selection type', 'sizeme-for-woocommerce' ),
 				'type'    => 'text',
-				'default' => get_option( WC_SizeMe_Measurements::SIZE_SELECTION_TYPE, '' ),
-				'id'      => WC_SizeMe_Measurements::SIZE_SELECTION_TYPE,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::SIZE_SELECTION_TYPE, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::SIZE_SELECTION_TYPE,
 			),
 			array(
-				'title'   => __( 'Add to cart element', 'sizeme' ),
+				'title'   => __( 'Add to cart element', 'sizeme-for-woocommerce' ),
 				'type'    => 'text',
-				'default' => get_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ),
-				'id'      => WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::ADD_TO_CART_ELEMENT, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::ADD_TO_CART_ELEMENT,
 			),
 			array(
-				'title'   => __( 'Add to cart event', 'sizeme' ),
+				'title'   => __( 'Add to cart event', 'sizeme-for-woocommerce' ),
 				'type'    => 'text',
-				'default' => get_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ),
-				'id'      => WC_SizeMe_Measurements::ADD_TO_CART_EVENT,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::ADD_TO_CART_EVENT, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::ADD_TO_CART_EVENT,
 			),
 			array(
-				'title'   => __( 'Add toggler', 'sizeme' ),
+				'title'   => __( 'Add toggler', 'sizeme-for-woocommerce' ),
 				'type'    => 'select',
 				'options' => array(
 					self::ADD_TOGGLER_NO => 'No',
 					self::ADD_TOGGLER_YES   => 'Yes',
 				),
-				'id'      => WC_SizeMe_Measurements::ADD_TOGGLER,
+				'id'      => WC_SizeMe_for_WooCommerce::ADD_TOGGLER,
 			),
 			array(
-				'title'   => __( 'Language code override', 'sizeme' ),
+				'title'   => __( 'Language code override', 'sizeme-for-woocommerce' ),
 				'type'    => 'text',
-				'default' => get_option( WC_SizeMe_Measurements::LANG_OVERRIDE, '' ),
-				'id'      => WC_SizeMe_Measurements::LANG_OVERRIDE,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::LANG_OVERRIDE, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::LANG_OVERRIDE,
 			),
 			array(
-				'title'   => __( 'Custom styles', 'sizeme' ),
+				'title'   => __( 'Custom styles', 'sizeme-for-woocommerce' ),
 				'type'    => 'textarea',
-				'default' => get_option( WC_SizeMe_Measurements::CUSTOM_CSS, '' ),
-				'id'      => WC_SizeMe_Measurements::CUSTOM_CSS,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::CUSTOM_CSS, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::CUSTOM_CSS,
 			),
 			array(
-				'title'   => __( 'Additional translations', 'sizeme' ),
+				'title'   => __( 'Additional translations', 'sizeme-for-woocommerce' ),
 				'type'    => 'textarea',
-				'default' => get_option( WC_SizeMe_Measurements::ADDITIONAL_TRANSLATIONS, '' ),
-				'id'      => WC_SizeMe_Measurements::ADDITIONAL_TRANSLATIONS,
+				'default' => get_option( WC_SizeMe_for_WooCommerce::ADDITIONAL_TRANSLATIONS, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::ADDITIONAL_TRANSLATIONS,
 			),
 			array(
 				'type' => 'sectionend',
@@ -279,12 +279,6 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 		$taxonomies = wc_get_attribute_taxonomies();
 		$result     = array();
 		foreach ( $taxonomies as $taxonomy ) {
-			// Skip the SizeMe attributes in the list.
-			if ( strpos( $taxonomy->attribute_name, 'sm_' ) === 0
-			     || strpos( $taxonomy->attribute_name, 'smi_' ) === 0
-			) {
-				continue;
-			}
 			$result[ $taxonomy->attribute_name ] = $taxonomy->attribute_label;
 		}
 
@@ -292,4 +286,4 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 	}
 }
 
-return new WC_Settings_SizeMe_Measurements();
+return new WC_Settings_SizeMe_for_WooCommerce();
