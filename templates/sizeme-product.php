@@ -45,23 +45,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	if ( $sizeme->is_service_test() ) {
 		echo 'sizeme_options.debugState = "true";'.PHP_EOL;
 	}
-	?>
+	
+	// UI OPTIONS
+	$uiOptions = array(
+		'appendContentTo' => WC_SizeMe_for_WooCommerce::APPEND_CONTENT_TO,
+		'invokeElement' => WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT,
+		'sizeSelectorType' => WC_SizeMe_for_WooCommerce::SIZE_SELECTION_TYPE,
+		'addToCartElement' => WC_SizeMe_for_WooCommerce::ADD_TO_CART_ELEMENT,
+		'addToCartEvent' => WC_SizeMe_for_WooCommerce::ADD_TO_CART_EVENT,
+		'lang' => WC_SizeMe_for_WooCommerce::LANG_OVERRIDE
+	);
+	
+	foreach ($uiOptions as $key => $value) {
+		if ( $sizeme->get_ui_option( $value, '' ) ) {
+			printf('sizeme_options.uiOptions.%s = "%s";'.PHP_EOL, $key, esc_js($sizeme->get_ui_option( $value, '' )));
+		}
+	}
 
-	sizeme_options.uiOptions.appendContentTo = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::APPEND_CONTENT_TO, '' ) ); ?>";
-	sizeme_options.uiOptions.invokeElement = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT, '' ) ); ?>";
-	sizeme_options.uiOptions.sizeSelectorType = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::SIZE_SELECTION_TYPE, '' ) ); ?>";
-	sizeme_options.uiOptions.addToCartElement = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::ADD_TO_CART_ELEMENT, '' ) ); ?>";
-	sizeme_options.uiOptions.addToCartEvent = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::ADD_TO_CART_EVENT, '' ) ); ?>";
-	sizeme_options.uiOptions.lang = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::LANG_OVERRIDE, '' ) ); ?>";
-
-	<?php
 	// TOGGLER
 	if ( $sizeme->is_toggler_yes() ) {
 		echo 'sizeme_options.uiOptions.toggler = "true";'.PHP_EOL;
 	}
-	?>
 
-	<?php
 	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
 	$trans = trim( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::ADDITIONAL_TRANSLATIONS, '' ) );
 	if ( !empty($trans) ) echo 'sizeme_options.additionalTranslations = {' . trim( $trans ) . '};'.PHP_EOL;
