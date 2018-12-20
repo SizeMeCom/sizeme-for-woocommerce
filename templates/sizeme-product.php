@@ -1,29 +1,29 @@
 <?php
 /**
- * SizeMe Measurements JavaScript
+ * SizeMe for WooCommerce JavaScript
  *
  * Adds the necessary JavaScript for creating the product and UI options.
  *
- * @package SizeMe Measurements
+ * @package SizeMe for WooCommerce
  * @since   1.0.0
  *
- * @var WC_SizeMe_Measurements $sizeme  The SizeMe Measurements object.
+ * @var WC_SizeMe_for_WooCommerce $sizeme  The SizeMe for WooCommerce object.
  * @var WC_Product_Variable    $product The variable product object.
  */
 
 /**
- * SizeMe Measurements is free software: you can redistribute it and/or modify
+ * SizeMe for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * SizeMe Measurements is distributed in the hope that it will be useful,
+ * SizeMe for WooCommerce is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SizeMe Measurements. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ * along with SizeMe for WooCommerce. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,36 +35,57 @@ if ( ! defined( 'ABSPATH' ) ) {
 	//<![CDATA[
 	var sizeme_options = {
 		service_status: "<?php echo esc_js( $sizeme->get_service_status() ); ?>",
-		buttonize: "<?php echo esc_js( $sizeme->get_custom_size_selection() ); ?>"
+		pluginVersion: "WC-<?php echo WC_VERSION; ?>",
+		shopType: "woocommerce",
+		uiOptions: {}
 	};
 
-	if (typeof sizeme_UI_options === 'undefined') {
-		var sizeme_UI_options = {};
+	<?php
+	// TEST MODE
+	if ( $sizeme->is_service_test() ) {
+		echo 'sizeme_options.debugState = "true";'.PHP_EOL;
+	}
+	
+	// UI OPTIONS
+	$uiOptions = array(
+		'appendContentTo' => WC_SizeMe_for_WooCommerce::APPEND_CONTENT_TO,
+		'invokeElement' => WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT,
+		'sizeSelectorType' => WC_SizeMe_for_WooCommerce::SIZE_SELECTION_TYPE,
+		'addToCartElement' => WC_SizeMe_for_WooCommerce::ADD_TO_CART_ELEMENT,
+		'addToCartEvent' => WC_SizeMe_for_WooCommerce::ADD_TO_CART_EVENT,
+		'lang' => WC_SizeMe_for_WooCommerce::LANG_OVERRIDE
+	);
+	
+	foreach ($uiOptions as $key => $value) {
+		if ( $sizeme->get_ui_option( $value, '' ) ) {
+			printf('sizeme_options.uiOptions.%s = "%s";'.PHP_EOL, $key, esc_js($sizeme->get_ui_option( $value, '' )));
+		}
 	}
 
-	sizeme_UI_options[ 'appendContentTo' ]  = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::APPEND_CONTENT_TO, '' ) ); ?>";
-	sizeme_UI_options[ 'appendSplashTo' ]   = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::APPEND_SPLASH_TO, '' ) ); ?>";
-	sizeme_UI_options[ 'addToCartElement' ] = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ) ); ?>";
-	sizeme_UI_options[ 'addToCartEvent' ]   = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
-
-	var size_selection = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::SIZE_SELECTION_CONTAINER_ELEMENT, '' ) ); ?>";
-	if (size_selection !== "") {
-		sizeme_UI_options[ 'sizeSelectionContainer' ] = size_selection;
+	// TOGGLER
+	if ( $sizeme->is_toggler_yes() ) {
+		echo 'sizeme_options.uiOptions.toggler = "true";'.PHP_EOL;
 	}
+
+	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
+	$trans = trim( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::ADDITIONAL_TRANSLATIONS, '' ) );
+	if ( !empty($trans) ) echo 'sizeme_options.additionalTranslations = {' . trim( $trans ) . '};'.PHP_EOL;
+	?>
 
 	var sizeme_product = {
 		name: "<?php echo esc_js( $product->get_formatted_name() ); ?>",
-		item: new SizeMe.Item(<?php echo '"' . esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_TYPE ) ) . '", '
-			. esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_LAYER ) ) . ', '
-			. esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_THICKNESS ) ) . ', '
-		. esc_js( $sizeme->get_smi_item( $product, WC_SizeMe_Measurements_Attributes::ITEM_STRETCH ) ); ?>)
-		<?php foreach ( $sizeme->get_variation_sizeme_attributes( $product ) as $size_attribute => $attributes ) : ?>
-			.addSize("<?php echo esc_js( $size_attribute ); ?>", new SizeMe.Map()
-				<?php foreach ( $attributes as $name => $value ) : ?>
-				.addItem("<?php echo esc_js( $name ); ?>", <?php echo (int) $value; ?>)
-				<?php endforeach; ?>
-			)
-		<?php endforeach; ?>
+		SKU: "<?php echo esc_js( $product->get_SKU() ); ?>",
+		item: {
+			<?php foreach ( $sizeme->get_variation_sizeme_skus( $product ) as $size_attribute => $sku ) : ?>
+			"<?php echo esc_js( strtoupper( $sku ) ); ?>" : "<?php echo esc_js( $size_attribute ); ?>",
+			<?php endforeach; ?>
+		}
 	};
 	//]]>
 </script>
+
+<?php
+// write possible custom css (placement questionable)
+$css = trim( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::CUSTOM_CSS, '' ) );
+if ( !empty($css) ) echo '<style type="text/css">' . trim( $css ) . '</style>'.PHP_EOL;
+

@@ -1,33 +1,32 @@
 <?php
 /**
- * SizeMe Measurements
+ * SizeMe for WooCommerce
  *
- * @package     SizeMe Measurements
- * @copyright   Copyright (c) 2015 SizeMe Ltd (http://www.sizeme.com/)
- * @since       1.0.0
+ * @package     SizeMe for WooCommerce
+ * @copyright   Copyright (c) SizeMe Ltd (https://www.sizeme.com/)
+ * @since       2.0.0
  *
  * @wordpress-plugin
- * Plugin Name: SizeMe Measurements
- * Description: SizeMe is a service where you can store your physical measurements and use them at clothes retailers to
- * get size recommendations and personalized information on how the item will fit you.
- * Version:     1.0.0
+ * Plugin Name: SizeMe for WooCommerce
+ * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
+ * Version:     2.0.0
  * Author:      SizeMe Ltd
- * Author URI:  http://www.sizeme.com/
+ * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
  * License:     GPLv2 or later
  *
- * SizeMe Measurements is free software: you can redistribute it and/or modify
+ * SizeMe for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * SizeMe Measurements is distributed in the hope that it will be useful,
+ * SizeMe for WooCommerce is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SizeMe Measurements. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ * along with SizeMe for WooCommerce. If not, see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,14 +34,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class WC_SizeMe_Measurements.
+ * Class WC_SizeMe_for_WooCommerce.
  *
  * Handles registering of CSS and JavaScript, initialization of the plugin.
  * Adds the settings page, checks for dependencies and handles installing, activating and uninstalling the plugin.
  *
  * @since 1.0.0
  */
-class WC_SizeMe_Measurements {
+class WC_SizeMe_for_WooCommerce {
 
 	/**
 	 * Plugin version, used for dependency checks.
@@ -51,7 +50,7 @@ class WC_SizeMe_Measurements {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '2.0.0';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -77,7 +76,7 @@ class WC_SizeMe_Measurements {
 	 * @since  1.0.0
 	 * @access private
 	 *
-	 * @var WC_SizeMe_Measurements $instance The plugin instance.
+	 * @var WC_SizeMe_for_WooCommerce $instance The plugin instance.
 	 */
 	private static $instance = null;
 
@@ -127,13 +126,13 @@ class WC_SizeMe_Measurements {
 	const SERVICE_STATUS_ID = 'service_status';
 
 	/**
-	 * Custom size selection key, used when saving settings and when retrieving them.
+	 * UI option, API key, used in conversations with the SizeMe Shop API
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
-	 * @var string CUSTOM_SIZE_SELECTION_ID The key for the custom size selection.
+	 * @var string API_KEY The key for the Key!
 	 */
-	const CUSTOM_SIZE_SELECTION_ID = 'custom_size_selection';
+	const API_KEY = 'api_key';
 
 	/**
 	 * UI option, append content to element, used in settings.
@@ -145,13 +144,22 @@ class WC_SizeMe_Measurements {
 	const APPEND_CONTENT_TO = 'append_content_to';
 
 	/**
-	 * UI option, append splash to element, used in settings.
+	 * UI option, invoke element, used in settings.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
-	 * @var string APPEND_SPLASH_TO The key for UI option.
+	 * @var string INVOKE_ELEMENT The key for UI option.
 	 */
-	const APPEND_SPLASH_TO = 'append_splash_to';
+	const INVOKE_ELEMENT = 'invoke_element';
+
+	/**
+	 * UI option, size selector type, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string SIZE_SELECTION_TYPE The key for UI option.
+	 */
+	const SIZE_SELECTION_TYPE = 'size_selection_type';
 
 	/**
 	 * UI option, add to cart element, used in settings.
@@ -172,13 +180,60 @@ class WC_SizeMe_Measurements {
 	const ADD_TO_CART_EVENT = 'add_to_cart_event';
 
 	/**
-	 * UI option, size selection container, used in settings.
+	 * UI option, add toggler
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 *
-	 * @var string SIZE_SELECTION_CONTAINER_ELEMENT The key for UI option.
+	 * @var boolean ADD_TOGGLER The key for UI option.
 	 */
-	const SIZE_SELECTION_CONTAINER_ELEMENT = 'size_selection_container_element';
+	const ADD_TOGGLER = 'add_toggler';
+
+	/**
+	 * UI option, lang override, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string LANG_OVERRIDE The key for UI option.
+	 */
+	const LANG_OVERRIDE = 'lang_override';
+
+	/**
+	 * UI option, custom css, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string CUSTOM_CSS The key for UI option.
+	 */
+	const CUSTOM_CSS = 'custom_css';
+
+	/**
+	 * UI option, additional translations, used in settings.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string ADDITIONAL_TRANSLATIONS The key for UI option.
+	 */
+	const ADDITIONAL_TRANSLATIONS = 'additional_translations';
+
+    /**
+     * Info related to SizeMe API requests
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string API_CONTEXT_ADDRESS Where to send API stuff
+	 * @var string API_CONTEXT_ADDRESS_TEST Where to send API stuff if in test mode
+	 * @var string API_SEND_ORDER_INFO Address for orders
+	 * @var string API_SEND_ADD_TO_CART Address for add to carts
+	 * @var string COOKIE_SESSION Session cookie
+	 * @var string COOKIE_ACTION SizeMe action jackson cookie
+
+     */
+    const API_CONTEXT_ADDRESS   = 'https://sizeme.com';
+    const API_CONTEXT_ADDRESS_TEST   = 'https://test.sizeme.com';
+    const API_SEND_ORDER_INFO   = '/shop-api/sendOrderComplete';
+    const API_SEND_ADD_TO_CART  = '/shop-api/sendAddToCart';
+    const COOKIE_SESSION        = 'wcsid';       // WC specific
+    const COOKIE_ACTION         = 'sm_action';
 
 	/**
 	 * Get the plugin instance.
@@ -187,11 +242,11 @@ class WC_SizeMe_Measurements {
 	 *
 	 * @since  1.0.0
 	 *
-	 * @return WC_SizeMe_Measurements The plugin instance.
+	 * @return WC_SizeMe_for_WooCommerce The plugin instance.
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
-			self::$instance = new WC_SizeMe_Measurements();
+			self::$instance = new WC_SizeMe_for_WooCommerce();
 		}
 
 		return self::$instance;
@@ -205,7 +260,7 @@ class WC_SizeMe_Measurements {
 	 * @since  1.0.0
 	 * @access private
 	 *
-	 * @return WC_SizeMe_Measurements The plugin instance.
+	 * @return WC_SizeMe_for_WooCommerce The plugin instance.
 	 */
 	private function __construct() {
 		$this->plugin_dir  = untrailingslashit( plugin_dir_path( __FILE__ ) );
@@ -246,33 +301,11 @@ class WC_SizeMe_Measurements {
 		// Get the product object, and make sure it is a variable product.
 		$product = wc_get_product( $post );
 		if ( $product instanceof WC_Product_Variable ) {
-			wp_enqueue_script( 'sizeme_deps_js', 'http://sizeme.com/2.1/js/sizeme-woocommerce-with-deps.min.js' );
-			wp_enqueue_style( 'sizeme_css', 'http://sizeme.com/2.1/css/sizeme-woocommerce.min.css' );
+			wp_enqueue_style( 'sizeme_css', '//sizeme.com/3.0/sizeme-styles.css' );
+			wp_enqueue_script( 'sizeme_js_manifest', '//sizeme.com/3.0/sizeme-manifest.js', '', '', true );
+			wp_enqueue_script( 'sizeme_js_vendor', '//sizeme.com/3.0/sizeme-vendor.js', '', '', true );
+			wp_enqueue_script( 'sizeme_js', '//sizeme.com/3.0/sizeme.js', '', '', true );
 		}
-	}
-
-	/**
-	 * Check if the given attribute is a SizeMe Measurement attribute.
-	 *
-	 * Checks against the pre-configured SizeMe attributes, if the given attribute is one of them.
-	 *
-	 * @since  1.0.0
-	 *
-	 * @param string $attribute_name The attribute name to check.
-	 *
-	 * @return bool True if it is a SizeMe attribute, false otherwise.
-	 */
-	public function is_sizeme_attribute( $attribute_name ) {
-		$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
-
-		if ( empty( $attribute_name ) || substr( $attribute_name, 0, strlen( '_sm_' ) ) !== '_sm_' ) {
-			return false;
-		}
-
-		// Remove the underscore from the attribute name, e.g. _sm_waist => sm_waist.
-		$attribute = substr( $attribute_name, 1 );
-
-		return in_array( $attribute, WC_SizeMe_Measurements_Attributes::get_attribute_names(), true );
 	}
 
 	/**
@@ -289,17 +322,19 @@ class WC_SizeMe_Measurements {
 		return get_option( self::SERVICE_STATUS_ID );
 	}
 
+
 	/**
-	 * Get the custom size selection.
+	 * Get the toggler boolean state.
 	 *
-	 * Gets if the SizeMe Measurements custom size selection should be used.
+	 * Gets the toggler boolean state from the configuration.
+	 * Either 'no' or 'yes'
 	 *
-	 * @since  1.0.0
+	 * @since  2.0.0
 	 *
-	 * @return string Custom size selection, yes, no.
+	 * @return string The toggler status as a string.
 	 */
-	public function get_custom_size_selection() {
-		return get_option( self::CUSTOM_SIZE_SELECTION_ID );
+	public function is_toggler_yes() {
+		return ( get_option( self::ADD_TOGGLER ) == 'yes' );
 	}
 
 	/**
@@ -319,49 +354,34 @@ class WC_SizeMe_Measurements {
 	}
 
 	/**
-	 * Returns a map of SizeMe attribute names with their corresponding values.
+	 * Check if service is in TEST mode
 	 *
-	 * The map can be directly converted into and JS SizeMe product item in the
-	 * view file.
+	 * Reads value and returns if true or false
 	 *
-	 * Format:
+	 * @since  2.0.0
 	 *
-	 *      array(
-	 *          "chest"              => 530,
-	 *          "waist"              => 510,
-	 *          "sleeve"             => 220,
-	 *          "sleeve_top_width"   => 208,
-	 *          "wrist_width"        => 175,
-	 *          "underbust"          => 0,
-	 *          "neck_opening_width" => 0,
-	 *          "shoulder_width"     => 126,
-	 *          "front_height"       => 720,
-	 *          "pant_waist"         => 0,
-	 *          "hips"               => 510,
-	 *          "inseam"             => 0,
-	 *          "outseam"            => 0,
-	 *          "thigh_width"        => 0,
-	 *          "knee_width"         => 0,
-	 *          "calf_width"         => 0,
-	 *          "pant_sleeve_width"  => 0,
-	 *          "shoe_inside_length" => 0,
-	 *          "shoe_inside_width"  => 0,
-	 *          "hat_width"          => 0,
-	 *          "hood_height"        => 0,
-	 *      )
 	 *
-	 * @since  1.0.0
+	 * @return bool Test status
+	 */
+	public function is_service_test() {
+		return ( $this->get_service_status() == 'test' );
+	}
+
+	/**
+	 * Returns a list of variation product skus along with the size attribute value.
+	 *
+	 * @since  2.0.0
 	 *
 	 * @param WC_Product_Variable $product The product.
 	 *
-	 * @return array The attribute map, or empty array if not correct product.
+	 * @return array attribute as key and sku as value
 	 */
-	public function get_variation_sizeme_attributes( WC_Product_Variable $product ) {
+	public function get_variation_sizeme_skus( WC_Product_Variable $product ) {
 
 		if ( is_product() ) {
 			// Only for variable products.
 			if ( $product instanceof WC_Product_Variable ) {
-				return $this->load_attributes( $product );
+				return $this->load_skus( $product );
 			}
 		}
 
@@ -369,22 +389,24 @@ class WC_SizeMe_Measurements {
 	}
 
 	/**
-	 * Load the SizeMe Measurements attributes.
+	 * Load the SizeMe for WooCommerce skus.
 	 *
-	 * Loads the SizeMe attributes in the attributes array.
-	 *
-	 * @since  1.0.0
+	 * @since  2.0.0
 	 * @access protected
 	 *
 	 * @param WC_Product_Variable $product The product.
 	 *
-	 * @return array The attributes.
+	 * @return array The skus.
 	 */
-	protected function load_attributes( WC_Product_Variable $product ) {
-		if ( empty( self::$attributes[ $product->id ] ) ) {
+	protected function load_skus( WC_Product_Variable $product ) {
+		if ( empty( self::$attributes[ $product->get_id() ] ) ) {
+
 			$variations = $product->get_available_variations();
+
 			foreach ( $variations as $variation ) {
+
 				$variation_meta = get_post_meta( $variation['variation_id'] );
+
 				if ( is_array( $variation_meta ) && count( $variation_meta ) > 0 ) {
 					$size_attribute = $this->get_size_attribute( $product );
 					foreach ( $variation_meta as $attribute => $value ) {
@@ -392,24 +414,22 @@ class WC_SizeMe_Measurements {
 							continue;
 						}
 
-						if ( $this->is_sizeme_attribute( $attribute ) ) {
-							// Remove '_sm_' from the attribute, as we only want "chest", "waist" etc.
-							$attribute = substr( $attribute, strlen( '_sm_' ), strlen( $attribute ) );
-							if ( isset( $variation['attributes'][ 'attribute_pa_' . $size_attribute ] ) ) {
-								// The attribute code value here is the attribute_pa_size, which is "small","extra-small","large", or whatever the slug is.
-								$attribute_code = $variation['attributes'][ 'attribute_pa_' . $size_attribute ];
-								if ( ! isset( self::$attributes[ $product->id ][ $attribute_code ][ $attribute ] ) ) {
-									self::$attributes[ $product->id ][ $attribute_code ][ $attribute ] = $value[0];
-								}
+						if ( isset( $variation['attributes'][ 'attribute_pa_' . $size_attribute ] ) ) {
+							// The attribute code value here is the attribute_pa_size, which is "small","extra-small","large", or whatever the slug is.
+							$attribute_code = $variation['attributes'][ 'attribute_pa_' . $size_attribute ];
+							if ( ! isset( self::$attributes[ $product->get_id() ][ $attribute_code ] ) ) {
+								self::$attributes[ $product->get_id() ][ $attribute_code ] = (string)$variation[ 'sku' ];
 							}
 						}
+
 					}
 				}
 			}
 		}
 
-		return self::$attributes[ $product->id ];
+		return self::$attributes[ $product->get_id() ];
 	}
+
 
 	/**
 	 * Get the configured size attribute(s).
@@ -456,21 +476,126 @@ class WC_SizeMe_Measurements {
 		return in_array( substr( $attribute, strlen( 'pa_' ) ), $size_attributes, true );
 	}
 
-	/**
-	 * Get the smi_item_* attribute for the product.
+    /**
+     * Sends the some data to SizeMe
 	 *
-	 * Returns the set value for the smi_item_* attributes for the product.
+	 * @since 2.0.0
 	 *
-	 * @param WC_Product_Variable $product The product variable.
-	 * @param string              $type    The type to get.
-	 *
-	 * @return string|null The value for the smi_item_* or null if not found.
-	 */
-	public function get_smi_item( WC_Product_Variable $product, $type ) {
-		$post_meta = get_post_meta( $product->id );
+	 * @param string $address 		where to send the stuff
+	 * @param string $dataString	the json encoded data to send
+     *
+     * @return boolean success
+     */
+    public function send($address, $dataString)
+    {
+        $apiKey = get_option( self::API_KEY );
 
-		return isset( $post_meta[ '_' . $type ][0] ) ? $post_meta[ '_' . $type ][0] : null;
-	}
+		if ( !$apiKey ) return false;	// might as well fail if the key is missing
+
+        $ch = curl_init( $address );
+
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($dataString),
+            'X-Sizeme-Apikey: ' . $apiKey)
+        );
+
+        $result = curl_exec($ch);
+
+		if ( $this->is_service_test() ) error_log( sprintf( 'API message sent to %s, response %s', $address, print_r($result) ) );
+
+        return ($result !== false);
+    }
+
+    /**
+	 * Hook callback function for add to cart events
+	 *
+	 * Gathers necessary data and sends the info to SizeMe
+	 *
+	 * @since 2.0.0
+	 *
+     * @return boolean success
+     */
+    public function send_add_to_cart_info($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data)
+    {
+		$parent_product = New WC_Product( $product_id );
+		$child_product = New WC_Product_Variation( $variation_id );
+
+        $arr = array(
+            'SKU' => $child_product->get_sku(),
+            'quantity' => (int)$quantity,
+            'name' => $parent_product->get_name(),
+            'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
+            'actionIdentifier' => $_COOKIE[ self::COOKIE_ACTION ]
+        );
+
+		$address = self::API_CONTEXT_ADDRESS . self::API_SEND_ADD_TO_CART;
+		if ( $this->is_service_test() ) $address = self::API_CONTEXT_ADDRESS_TEST . self::API_SEND_ADD_TO_CART;
+
+		return $this->send(
+			$address,
+			json_encode($arr)
+		);
+
+    }
+
+    /**
+	 * Hook callback function for order events
+	 *
+	 * Gathers necessary data and sends the info to SizeMe
+	 *
+	 * @since 2.0.0
+	 *
+     * @return boolean success
+     */
+    public function send_order_info($order_id)
+    {
+		$order = New WC_Order( $order_id );
+
+		if (!$order) return false;
+
+		// check if this has already been sent to SizeMe
+		if( get_post_meta( $order_id, 'delivery_order_id', true ) ) {
+			return false;
+		}
+
+        $arr = array(
+            'orderNumber' => $order_id,
+            'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
+            'orderStatusCode' => (int)200,
+            'orderStatusLabel' => $order->get_status(),
+            'buyer' => array(
+                'emailHash' => md5( strtolower( $order->get_billing_email() ) ),
+            ),
+            'createdAt' => $order->get_date_created()->date('Y-m-d H:i:s'),
+            'purchasedItems' => array(),
+        );
+
+        foreach ($order->get_items() as $item) {
+			$product = $item->get_product();
+            $arr['purchasedItems'][] = array(
+                'SKU' => $product->get_sku(),
+                'quantity' => (int)$item->get_quantity(),
+                'name' => $item->get_name(),
+                'unitPriceInclTax' => round( wc_get_price_including_tax( $product ), 2 ),
+                'finalPriceExclTax' => round( $order->get_line_total( $item, false ), 2),
+                'priceCurrencyCode' => strtoupper( get_woocommerce_currency() ),
+            );
+        }
+
+		if ( $this->is_service_test() ) $address = self::API_CONTEXT_ADDRESS_TEST . self::API_SEND_ADD_TO_CART;
+
+		if ( $this->send( $address, json_encode($arr) ) ) {
+			update_post_meta( $order_id, 'delivery_order_id', esc_attr( $order_id ) );
+		}
+
+		return false;
+
+    }
 
 	/**
 	 * Add the SizeMe Measurement scripts to the product page.
@@ -484,7 +609,6 @@ class WC_SizeMe_Measurements {
 			global $product;
 			// Make sure we only render for variable products.
 			if ( $product instanceof WC_Product_Variable ) {
-				$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
 				$this->render( 'sizeme-product', array( 'product' => $product, 'sizeme' => $this ) );
 			}
 		}
@@ -556,7 +680,7 @@ class WC_SizeMe_Measurements {
 	 * @return array The updated list of settings.
 	 */
 	public function add_setting_page( $settings ) {
-		$settings[] = require_once( 'classes/class-wc-settings-sizeme-measurements.php' );
+		$settings[] = require_once( 'classes/class-wc-settings-sizeme-for-woocommerce.php' );
 
 		return $settings;
 	}
@@ -573,6 +697,9 @@ class WC_SizeMe_Measurements {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'woocommerce_before_single_product', array( $this, 'add_sizeme_scripts' ), 20, 0 );
 
+		add_action( 'woocommerce_add_to_cart', array( $this, 'send_add_to_cart_info' ), 10, 6 );
+		add_action( 'woocommerce_thankyou', array( $this, 'send_order_info' ), 10, 1 );
+
 		add_filter( 'woocommerce_locate_template', array( $this, 'locate_template' ), 10, 3 );
 	}
 
@@ -585,152 +712,7 @@ class WC_SizeMe_Measurements {
 	 */
 	protected function init_admin() {
 		add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_setting_page' ) );
-		add_filter( 'woocommerce_product_data_tabs', array( $this, 'product_data_tabs' ) );
-
-		add_action( 'woocommerce_save_product_variation', array( $this, 'save_product_variation' ), 10, 2 );
-		add_action( 'woocommerce_product_after_variable_attributes',
-		array( $this, 'product_after_variable_attributes' ), 10, 3 );
-		add_action( 'woocommerce_product_data_panels', array( $this, 'product_data_panels' ) );
-		add_action( 'woocommerce_process_product_meta_variable', array( $this, 'process_product_meta_variable' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-	}
-
-	/**
-	 * Save product variation.
-	 *
-	 * Saves the SizeMe attributes for the given variation.
-	 *
-	 * @param int $variation_id The variation id.
-	 * @param int $i            The "loop", e.g. current variation.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void If nonce verification fails.
-	 */
-	public function save_product_variation( $variation_id, $i ) {
-		if ( empty( $_POST['sizeme_product_nonce'] ) || ( ! wp_verify_nonce( wp_unslash( $_POST['sizeme_product_nonce'] ), // Input var okay.
-		'sizeme_save_product_variation' ) )
-		) {
-			return;
-		}
-		$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
-		foreach ( WC_SizeMe_Measurements_Attributes::get_attribute_names() as $attribute_name ) {
-			if ( isset( $_POST[ 'variable_' . $attribute_name ][ $i ] ) ) { // Input var okay.
-				$value = sanitize_text_field( wp_unslash( $_POST[ 'variable_' . $attribute_name ][ $i ] ) ); // Input var okay.
-				// Allow value to be reset to empty.
-				if ( '' === $value || intval( $value ) > 0 ) {
-					update_post_meta( $variation_id, '_' . $attribute_name, $value );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Render SizeMe attributes.
-	 *
-	 * Renders the SizeMe attributes on the product data section in the variations tab.
-	 *
-	 * @param int     $loop           The "loop" in which we are, e.g. current variation.
-	 * @param array   $variation_data The variation data.
-	 * @param WP_Post $variation      The current variation.
-	 *
-	 * @since 1.0.0
-	 */
-	public function product_after_variable_attributes( $loop, $variation_data, $variation ) {
-		$this->load_class( 'WC_SizeMe_Measurements_Attributes' );
-
-		$variation_meta = get_post_meta( $variation->ID );
-		$data           = array();
-
-		// Build the data for the view.
-		foreach ( WC_SizeMe_Measurements_Attributes::get_attribute_names() as $attribute_name ) {
-			// Skip smi_* attributes.
-			if ( substr( $attribute_name, 0, strlen( 'smi_' ) ) === 'smi_' ) {
-				continue;
-			}
-
-			$value = null;
-			if ( isset( $variation_meta[ '_' . $attribute_name ][0] ) ) {
-				$value = $variation_meta[ '_' . $attribute_name ][0];
-			}
-
-			$label = ucfirst( str_replace( '_', ' ', substr( $attribute_name, strlen( 'sm_' ) ) ) );
-
-			$data[ '_' . $attribute_name ] = array(
-				'label' => __( $label, 'sizeme' ),
-				'name'  => 'variable_' . $attribute_name . '[' . $loop . ']',
-				'value' => $value,
-			);
-		}
-
-		// Print out the nonce field.
-		wp_nonce_field( 'sizeme_save_product_variation', 'sizeme_product_nonce' );
-
-		$this->render( 'sizeme-product-variation', array( 'attribute_data' => $data ) );
-	}
-
-	/**
-	 * Add product data tab.
-	 *
-	 * Adds a new SizeMe tab to the product data.
-	 *
-	 * @param array $tabs The current tabs.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array The tabs.
-	 */
-	public function product_data_tabs( $tabs ) {
-		$tabs['sizeme'] = array(
-			'label'  => __( 'SizeMe', 'sizeme' ),
-			'target' => 'sizeme_product_data',
-			'class'  => array( 'hide_if_grouped', 'show_if_variable' ),
-		);
-
-		return $tabs;
-	}
-
-	/**
-	 * Process product meta.
-	 *
-	 * Handles saving of the SizeMe smi_item_* attributes.
-	 *
-	 * @param int $post_id The post id.
-	 *
-	 * @since 1.0.0
-	 */
-	public function process_product_meta_variable( $post_id ) {
-		if ( empty( $_POST['sizeme_data_nonce'] ) || ( ! wp_verify_nonce( wp_unslash( $_POST['sizeme_data_nonce'] ), // Input var okay.
-		'sizeme_product_data_panels' ) )
-		) {
-			return;
-		}
-		$attributes = array(
-			'_smi_item_type',
-			'_smi_item_layer',
-			'_smi_item_thickness',
-			'_smi_item_stretch',
-		);
-		foreach ( $attributes as $attribute ) {
-			if ( isset( $_POST[ $attribute ] ) ) { // Input var okay.
-				$value = sanitize_text_field( wp_unslash( $_POST[ $attribute ] ) ); // Input var okay.
-				if ( '' === $value || intval( $value ) > 0 ) {
-					update_post_meta( $post_id, $attribute, $value );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Render data panels
-	 *
-	 * Renders the content of the SizeMe panel in the product administration.
-	 *
-	 * @since 1.0.0
-	 */
-	public function product_data_panels() {
-		wp_nonce_field( 'sizeme_product_data_panels', 'sizeme_data_nonce' );
-		$this->render( 'sizeme-data-panels' );
 	}
 
 	/**
@@ -785,7 +767,7 @@ class WC_SizeMe_Measurements {
 		if ( version_compare( $wp_version, self::MIN_WP_VERSION, '<' ) ) {
 			$error = sprintf(
 				__( 'Looks like you\'re running an older version of WordPress, you need to be running at least
-					WordPress %1$s to use WooCommerce SizeMe Measurements %2$s.' ),
+					WordPress %1$s to use WooCommerce SizeMe for WooCommerce %2$s.' ),
 				self::MIN_WP_VERSION,
 				self::VERSION
 			);
@@ -794,14 +776,14 @@ class WC_SizeMe_Measurements {
 		if ( ! defined( 'WOOCOMMERCE_VERSION' ) ) {
 			$error = sprintf(
 				__( 'Looks like you\'re not running any version of WooCommerce, you need to be running at least
-					WooCommerce %1$s to use WooCommerce SizeMe Measurements %2$s.' ),
+					WooCommerce %1$s to use WooCommerce SizeMe for WooCommerce %2$s.' ),
 				self::MIN_WC_VERSION,
 				self::VERSION
 			);
 		} else if ( version_compare( WOOCOMMERCE_VERSION, self::MIN_WC_VERSION, '<' ) ) {
 			$error = sprintf(
 				__( 'Looks like you\'re running an older version of WooCommerce, you need to be running at least
-					WooCommerce %1$s to use WooCommerce SizeMe Measurements %2$s.' ),
+					WooCommerce %1$s to use WooCommerce SizeMe for WooCommerce %2$s.' ),
 				self::MIN_WC_VERSION,
 				self::VERSION
 			);
@@ -859,4 +841,4 @@ class WC_SizeMe_Measurements {
 	}
 }
 
-add_action( 'plugins_loaded', array( WC_SizeMe_Measurements::get_instance(), 'init' ) );
+add_action( 'plugins_loaded', array( WC_SizeMe_for_WooCommerce::get_instance(), 'init' ) );
