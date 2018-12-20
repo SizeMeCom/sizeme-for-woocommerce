@@ -180,6 +180,15 @@ class WC_SizeMe_Measurements {
 	const ADD_TO_CART_EVENT = 'add_to_cart_event';
 
 	/**
+	 * UI option, add toggler
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var boolean ADD_TOGGLER The key for UI option.
+	 */
+	const ADD_TOGGLER = 'add_toggler';
+
+	/**
 	 * UI option, lang override, used in settings.
 	 *
 	 * @since 2.0.0
@@ -311,6 +320,21 @@ class WC_SizeMe_Measurements {
 	 */
 	public function get_service_status() {
 		return get_option( self::SERVICE_STATUS_ID );
+	}
+
+
+	/**
+	 * Get the toggler boolean state.
+	 *
+	 * Gets the toggler boolean state from the configuration.
+	 * Either 'no' or 'yes'
+	 *
+	 * @since  2.0.0
+	 *
+	 * @return string The toggler status as a string.
+	 */
+	public function is_toggler_yes() {
+		return ( get_option( self::ADD_TOGGLER ) == 'yes' );
 	}
 
 	/**

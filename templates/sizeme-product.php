@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		shopType: "woocommerce",
 		uiOptions: {}
 	};
-	
+
 	<?php
 	// TEST MODE
 	if ( $sizeme->is_service_test() ) {
@@ -53,6 +53,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	sizeme_options.uiOptions.addToCartElement = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_ELEMENT, '' ) ); ?>";
 	sizeme_options.uiOptions.addToCartEvent = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ) ); ?>";
 	sizeme_options.uiOptions.lang = "<?php echo esc_js( $sizeme->get_ui_option( WC_SizeMe_Measurements::LANG_OVERRIDE, '' ) ); ?>";
+
+	<?php
+	// TOGGLER
+	if ( $sizeme->is_toggler_yes() ) {
+		echo 'sizeme_options.uiOptions.toggler = "true";'.PHP_EOL;
+	}
+	?>
 
 	<?php
 	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)

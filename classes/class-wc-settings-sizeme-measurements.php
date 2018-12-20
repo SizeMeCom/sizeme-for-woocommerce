@@ -64,6 +64,25 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 	const SERVICE_STATUS_TEST = 'test';
 
 	/**
+	 * Toggler is a no-no.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string ADD_TOGGLER_NO
+	 */
+	const ADD_TOGGLER_NO = 'no';
+
+	/**
+	 * Toggler is good.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string ADD_TOGGLER_YES
+	 */
+	const ADD_TOGGLER_YES = 'yes';
+
+
+	/**
 	 * Class constructor.
 	 *
 	 * Initializes the settings.
@@ -185,6 +204,15 @@ class WC_Settings_SizeMe_Measurements extends WC_Settings_Page {
 				'type'    => 'text',
 				'default' => get_option( WC_SizeMe_Measurements::ADD_TO_CART_EVENT, '' ),
 				'id'      => WC_SizeMe_Measurements::ADD_TO_CART_EVENT,
+			),
+			array(
+				'title'   => __( 'Add toggler', 'sizeme' ),
+				'type'    => 'select',
+				'options' => array(
+					self::ADD_TOGGLER_NO => 'No',
+					self::ADD_TOGGLER_YES   => 'Yes',
+				),
+				'id'      => WC_SizeMe_Measurements::ADD_TOGGLER,
 			),
 			array(
 				'title'   => __( 'Language code override', 'sizeme' ),
