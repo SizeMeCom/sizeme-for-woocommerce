@@ -64,6 +64,9 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 
 == Changelog ==
 
+= 2.0.1 =
+* added clientKey to sizeme_options
+
 = 2.0.0 =
 * Fairly complete rewrite for SizeMe v3.0
 * Supports only the SizeMe product database for measurements
