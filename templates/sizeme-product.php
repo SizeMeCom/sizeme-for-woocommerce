@@ -37,6 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		service_status: "<?php echo esc_js( $sizeme->get_service_status() ); ?>",
 		pluginVersion: "WC-<?php echo WC_VERSION; ?>",
 		shopType: "woocommerce",
+		clientKey: "<?php echo esc_js( $sizeme->get_client_key() ); ?>",
 		uiOptions: {}
 	};
 
