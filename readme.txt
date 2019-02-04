@@ -64,6 +64,9 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 
 == Changelog ==
 
+= 2.0.2 =
+* fixed bug in cart tracking
+
 = 2.0.1 =
 * added clientKey to sizeme_options
 
