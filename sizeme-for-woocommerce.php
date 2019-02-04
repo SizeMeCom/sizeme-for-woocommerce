@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
- * Version:     2.0.1
+ * Version:     2.0.2
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
@@ -50,7 +50,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '2.0.1';
+	const VERSION = '2.0.2';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -232,7 +232,7 @@ class WC_SizeMe_for_WooCommerce {
     const API_CONTEXT_ADDRESS_TEST   = 'https://test.sizeme.com';
     const API_SEND_ORDER_INFO   = '/shop-api/sendOrderComplete';
     const API_SEND_ADD_TO_CART  = '/shop-api/sendAddToCart';
-    const COOKIE_SESSION        = 'wcsid';       // WC specific
+    const COOKIE_SESSION        = 'sm_cart';
     const COOKIE_ACTION         = 'sm_action';
 
 	/**
@@ -299,12 +299,14 @@ class WC_SizeMe_for_WooCommerce {
 		global $post;
 
 		// Get the product object, and make sure it is a variable product.
-		$product = wc_get_product( $post );
-		if ( $product instanceof WC_Product_Variable ) {
-			wp_enqueue_style( 'sizeme_css', '//sizeme.com/3.0/sizeme-styles.css' );
-			wp_enqueue_script( 'sizeme_js_manifest', '//sizeme.com/3.0/sizeme-manifest.js', '', '', true );
-			wp_enqueue_script( 'sizeme_js_vendor', '//sizeme.com/3.0/sizeme-vendor.js', '', '', true );
-			wp_enqueue_script( 'sizeme_js', '//sizeme.com/3.0/sizeme.js', '', '', true );
+		if ( is_product() ) {
+			$product = wc_get_product( $post );
+			if ( $product instanceof WC_Product_Variable ) {
+				wp_enqueue_style( 'sizeme_css', '//sizeme.com/3.0/sizeme-styles.css' );
+				wp_enqueue_script( 'sizeme_js_manifest', '//sizeme.com/3.0/sizeme-manifest.js', '', '', true );
+				wp_enqueue_script( 'sizeme_js_vendor', '//sizeme.com/3.0/sizeme-vendor.js', '', '', true );
+				wp_enqueue_script( 'sizeme_js', '//sizeme.com/3.0/sizeme.js', '', '', true );
+			}
 		}
 	}
 
@@ -334,6 +336,42 @@ class WC_SizeMe_for_WooCommerce {
 	 */
 	public function get_client_key() {
 		return hash( 'sha256', get_option( self::API_KEY ) );
+	}
+
+
+	/**
+	 * Return WooCommerce session cookie
+	 *
+	 * Gets the value
+	 *
+	 * @since  2.0.2
+	 *
+	 * @return string Cookie value
+	 */
+	public function get_sm_session_cookie() {
+		// the WC session cookie isn't (necessarily) in place yet, so we have to use our own
+		$val = '';
+		if (!isset($_COOKIE[ self::COOKIE_SESSION ])) {
+			$val = md5(rand().microtime());
+			$_COOKIE[ self::COOKIE_SESSION ] = $val;
+			setcookie( self::COOKIE_SESSION , $val, strtotime( '+30 days' ), '/' );
+		} else {
+			$val = $_COOKIE[ self::COOKIE_SESSION ];
+		}
+		return $val;
+	}
+
+	/**
+	 * Return SizeMe action cookie
+	 *
+	 * Gets the value
+	 *
+	 * @since  2.0.2
+	 *
+	 * @return string Cookie value
+	 */
+	public function get_sm_action_cookie() {
+		return ( isset( $_COOKIE[ self::COOKIE_ACTION ] ) ? $_COOKIE[ self::COOKIE_ACTION ] : '' );
 	}
 
 
@@ -520,8 +558,6 @@ class WC_SizeMe_for_WooCommerce {
 
         $result = curl_exec($ch);
 
-		if ( $this->is_service_test() ) error_log( sprintf( 'API message sent to %s, response %s', $address, print_r($result) ) );
-
         return ($result !== false);
     }
 
@@ -543,8 +579,8 @@ class WC_SizeMe_for_WooCommerce {
             'SKU' => $child_product->get_sku(),
             'quantity' => (int)$quantity,
             'name' => $parent_product->get_name(),
-            'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
-            'actionIdentifier' => $_COOKIE[ self::COOKIE_ACTION ]
+            'orderIdentifier' => $this->get_sm_session_cookie(),
+            'actionIdentifier' => $this->get_sm_action_cookie()
         );
 
 		$address = self::API_CONTEXT_ADDRESS . self::API_SEND_ADD_TO_CART;
@@ -579,7 +615,7 @@ class WC_SizeMe_for_WooCommerce {
 
         $arr = array(
             'orderNumber' => $order_id,
-            'orderIdentifier' => $_COOKIE[ self::COOKIE_SESSION ],
+            'orderIdentifier' => $this->get_sm_session_cookie(),
             'orderStatusCode' => (int)200,
             'orderStatusLabel' => $order->get_status(),
             'buyer' => array(
@@ -605,6 +641,9 @@ class WC_SizeMe_for_WooCommerce {
 
 		if ( $this->send( $address, json_encode($arr) ) ) {
 			update_post_meta( $order_id, 'delivery_order_id', esc_attr( $order_id ) );
+			// clear sm_cart cookie
+			unset( $_COOKIE[ self::COOKIE_SESSION ] );
+			setcookie( self::COOKIE_SESSION , '', time() - 3600 , '/' );
 		}
 
 		return false;
