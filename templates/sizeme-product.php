@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	if ( $sizeme->is_service_test() ) {
 		echo 'sizeme_options.debugState = "true";'.PHP_EOL;
 	}
-	
+
 	// UI OPTIONS
 	$uiOptions = array(
 		'appendContentTo' => WC_SizeMe_for_WooCommerce::APPEND_CONTENT_TO,
@@ -56,7 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		'addToCartEvent' => WC_SizeMe_for_WooCommerce::ADD_TO_CART_EVENT,
 		'lang' => WC_SizeMe_for_WooCommerce::LANG_OVERRIDE
 	);
-	
+
 	foreach ($uiOptions as $key => $value) {
 		if ( $sizeme->get_ui_option( $value, '' ) ) {
 			printf('sizeme_options.uiOptions.%s = "%s";'.PHP_EOL, $key, esc_js($sizeme->get_ui_option( $value, '' )));
@@ -82,6 +82,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endforeach; ?>
 		}
 	};
+<?php
+	//
+	// Add listener for sizemeChange and trigger local jQuery change event
+	// Requires that jQuery is defined before this (footer is not ok)
+	//
+	// @since 2.0.3
+	//
+	$el = '.variations select';
+	if ( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT, '' ) ) $el = $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT, '' );
+	echo 'if (window.jQuery) { jQuery(function() { document.querySelector("'.$el.'").addEventListener("sizemeChange", function(e) { jQuery("'.$el.'").trigger("change"); }) } ); }';
+?>
 	//]]>
 </script>
 
