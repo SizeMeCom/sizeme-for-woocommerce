@@ -77,9 +77,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 		name: "<?php echo esc_js( $product->get_formatted_name() ); ?>",
 		SKU: "<?php echo esc_js( $product->get_SKU() ); ?>",
 		item: {
-			<?php foreach ( $sizeme->get_variation_sizeme_skus( $product ) as $size_attribute => $sku ) : ?>
+<?php
+	$items = $sizeme->get_variation_sizeme_skus( $product );
+	if ($items):
+		foreach ( $items as $size_attribute => $sku ) :
+?>
 			"<?php echo esc_js( strtoupper( $sku ) ); ?>" : "<?php echo esc_js( $size_attribute ); ?>",
-			<?php endforeach; ?>
+<?php
+		endforeach;
+	endif;
+?>
 		}
 	};
 <?php
