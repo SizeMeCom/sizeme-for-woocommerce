@@ -64,11 +64,17 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 
 == Changelog ==
 
+= 2.0.4 =
+* Fixed bug in order tracking
+
+= 2.0.3 =
+* Added fix for selector change event triggering
+
 = 2.0.2 =
-* fixed bug in cart tracking
+* Fixed bug in cart tracking
 
 = 2.0.1 =
-* added clientKey to sizeme_options
+* Added clientKey to sizeme_options
 
 = 2.0.0 =
 * Fairly complete rewrite for SizeMe v3.0
