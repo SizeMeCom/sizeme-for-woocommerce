@@ -64,6 +64,9 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 
 == Changelog ==
 
+= 2.0.5 =
+* Improved handling in empty or broken products
+
 = 2.0.4 =
 * Fixed bug in order tracking
 
