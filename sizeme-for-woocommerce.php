@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
- * Version:     2.0.5
+ * Version:     2.0.6
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
@@ -50,7 +50,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '2.0.5';
+	const VERSION = '2.0.6';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -302,10 +302,7 @@ class WC_SizeMe_for_WooCommerce {
 		if ( is_product() ) {
 			$product = wc_get_product( $post );
 			if ( $product instanceof WC_Product_Variable ) {
-				wp_enqueue_style( 'sizeme_css', '//sizeme.com/3.0/sizeme-styles.css' );
-				wp_enqueue_script( 'sizeme_js_manifest', '//sizeme.com/3.0/sizeme-manifest.js', '', '', true );
-				wp_enqueue_script( 'sizeme_js_vendor', '//sizeme.com/3.0/sizeme-vendor.js', '', '', true );
-				wp_enqueue_script( 'sizeme_js', '//sizeme.com/3.0/sizeme.js', '', '', true );
+				wp_enqueue_script( 'sizeme_store_cdn-defer', '//cdn.sizeme.com/store/sizeme.js', '', '', false );
 			}
 		}
 	}
@@ -740,6 +737,34 @@ class WC_SizeMe_for_WooCommerce {
 	}
 
 	/**
+	 * Adds the async or defer attributes to script tags
+	 *
+	 * @since 2.0.6
+	 *
+	 * @param string $tag script tag
+	 * @param string $handle script handle
+	 *
+	 * @return string The updated script tag.
+	 */
+	public function add_asyncdefer_attribute($tag, $handle) {
+		// if the unique handle/name of the registered script has 'async' in it
+		if (strpos($handle, 'async') !== false) {
+			// return the tag with the async attribute
+			return str_replace( '<script ', '<script async ', $tag );
+		}
+		// if the unique handle/name of the registered script has 'defer' in it
+		else if (strpos($handle, 'defer') !== false) {
+			// return the tag with the defer attribute
+			return str_replace( '<script ', '<script defer ', $tag );
+		}
+		// otherwise skip
+		else {
+			return $tag;
+		}
+	}
+
+
+	/**
 	 * Initializes the plugin frontend part.
 	 *
 	 * Adds all hooks needed by the plugin in the frontend.
@@ -747,6 +772,8 @@ class WC_SizeMe_for_WooCommerce {
 	 * @since 1.0.0
 	 */
 	protected function init_frontend() {
+
+		add_filter( 'script_loader_tag', array( $this, 'add_asyncdefer_attribute' ), 10, 2 );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'woocommerce_before_single_product', array( $this, 'add_sizeme_scripts' ), 20, 0 );
