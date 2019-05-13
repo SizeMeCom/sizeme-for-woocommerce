@@ -1,9 +1,10 @@
 === sizeme-for-woocommerce ===
-Contributors: SizemeCom
+Contributors: sizeme
 Tags: sizeme, measurements, size guide, size recommendations
 Requires at least: 3.8
 Tested up to: 5.0
 Stable tag: 2.0.0
+Requires PHP: 5.2.4
 WC requires at least: 4.0
 WC tested up to: 2.3
 License: GPLv2 or later
@@ -13,7 +14,7 @@ SizeMe is a web store plugin that enables your consumers to input their measurem
 
 == Description ==
 
-SizeMe is a service for retailers who want to help buyers find better fitting clothes and shoes.  It uses an unique mathematical algorithm to store personal measurement data and recommend correct sizes.
+SizeMe is a web store plugin that enables your consumers to input their measurements and get personalized fit recommendations based on actual product data.  It is designed to help your users to choose better fitting clothes.
 
 It also provides a true-to-product size guide.  No more generic guides.
 
@@ -56,11 +57,11 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
     You will need to adjust these values according to your theme, or if you want to place the SizeMe plugin in another HTML element.
 5. Creating a product
 
-    When creating a new product, or updating an old one, you will need to add the SizeMe attributes to the product.
+    The SizeMe functionality only activates with products that can be found in the SizeMe Product Database which is hosted by SizeMe.
 
-    **NOTE:** Only a "Variable Product" can use the SizeMe attributes.
+    The product and its sizes are recognized with their SKU values.  Contact [support@sizeme.com](mailto:support@sizeme.com) to upload your products.
 
-    SizeMe hosts the product measurements in its own product database.  Contact [support@sizeme.com](mailto:support@sizeme.com) to upload your products.
+    The functionality can be tested using the SKU "SHIRT-FOTL-T-SHIRT" for the main product, and "SHIRT-FOTL-T-SHIRT-S", "SHIRT-FOTL-T-SHIRT-M" (and so on) for the single sizes.
 
 == Changelog ==
 
@@ -88,3 +89,13 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 
 = 1.0.0 =
 * Initial release.
+
+== Upgrade Notice ==
+
+= 2.0.6 =
+Minor performance-related update.  Upgrade normally.
+
+== Additional Information ==
+
+* SizeMe for WooCommerce on [GitHub](https://github.com/SizeMeCom/sizeme-for-woocommerce)
+* Demo page at [SizeMeDemo.com](https://www.sizemedemo.com/wordpress/)
