@@ -3,14 +3,14 @@ Contributors: sizeme
 Tags: sizeme, measurements, size guide, size recommendations
 Requires at least: 3.8
 Tested up to: 5.0
-Stable tag: 2.0.0
+Stable tag: 2.0.6
 Requires PHP: 5.2.4
-WC requires at least: 4.0
-WC tested up to: 2.3
+WC requires at least: 2.5
+WC tested up to: 3.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
+SizeMe is a web store plugin that enables your consumers to input their measurements and get fit recommendations based on actual product data.
 
 == Description ==
 
@@ -19,6 +19,17 @@ SizeMe is a web store plugin that enables your consumers to input their measurem
 It also provides a true-to-product size guide.  No more generic guides.
 
 [https://www.sizeme.com](https://www.sizeme.com/)
+
+The plugin is fully WPML compatible and also works with multiple attributes (such as size and color).
+
+== Features ==
+
+* Integrates seamlessly with your existing store
+* Product-specific size guide
+* Accurate size recommendations
+* Increase sales and reduce returns
+
+Currently, the plugin does not support custom-made clothing, only fixed sizes.
 
 == Installation ==
 
@@ -61,7 +72,14 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 
     The product and its sizes are recognized with their SKU values.  Contact [support@sizeme.com](mailto:support@sizeme.com) to upload your products.
 
-    The functionality can be tested using the SKU "SHIRT-FOTL-T-SHIRT" for the main product, and "SHIRT-FOTL-T-SHIRT-S", "SHIRT-FOTL-T-SHIRT-M" (and so on) for the single sizes.
+    The functionality can be tested using the SKU "SHIRT-FOTL-T-SHIRT" for the main product, and "SHIRT-FOTL-T-SHIRT-S", "SHIRT-FOTL-T-SHIRT-M" (and so on) for the single sizes.  See [the demo store](https://www.sizemedemo.com/wordpress/) for reference.
+
+== Screenshots ==
+
+1. Seamless integration to existing site.  Functionality can be visible directly or behind "Find my size" toggler.
+2. Offer a true-to-product size guide
+3. For size recommendations, we ask for physical measurements of the users and offer proper measuring instructions for this
+4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations 
 
 == Changelog ==
 
@@ -97,5 +115,5 @@ Minor performance-related update.  Upgrade normally.
 
 == Additional Information ==
 
-* SizeMe for WooCommerce on [GitHub](https://github.com/SizeMeCom/sizeme-for-woocommerce)
-* Demo page at [SizeMeDemo.com](https://www.sizemedemo.com/wordpress/)
+* SizeMe for WooCommerce is actively developed at [GitHub](https://github.com/SizeMeCom/sizeme-for-woocommerce)
+* Demo store with WPML enabled can be found at [SizeMeDemo.com](https://www.sizemedemo.com/wordpress/)
