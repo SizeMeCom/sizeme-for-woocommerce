@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	//
 	$el = '.variations select';
 	if ( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT, '' ) ) $el = $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::INVOKE_ELEMENT, '' );
-	echo 'if (window.jQuery) { jQuery(function() { document.querySelector("'.$el.'").addEventListener("sizemeChange", function(e) { jQuery("'.$el.'").trigger("change"); }) } ); }';
+	echo 'if (window.jQuery) { jQuery(function() { if (document.querySelector("'.$el.'")) document.querySelector("'.$el.'").addEventListener("sizemeChange", function(e) { jQuery("'.$el.'").trigger("change"); }) } ); }';
 ?>
 	//]]>
 </script>
