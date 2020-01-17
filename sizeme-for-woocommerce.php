@@ -573,7 +573,7 @@ class WC_SizeMe_for_WooCommerce {
 		$child_product = New WC_Product_Variation( $variation_id );
 
         $arr = array(
-            'SKU' => $child_product->get_sku(),
+            'SKU' => ($child_product->get_sku() ? $child_product->get_sku() : substr($this->get_client_key(), 0, 16).'-'.$variation_id),
             'quantity' => (int)$quantity,
             'name' => $parent_product->get_name(),
             'orderIdentifier' => $this->get_sm_session_cookie(),
@@ -625,7 +625,7 @@ class WC_SizeMe_for_WooCommerce {
         foreach ($order->get_items() as $item) {
 			$product = $item->get_product();
             $arr['purchasedItems'][] = array(
-                'SKU' => $product->get_sku(),
+                'SKU' => ($product->get_sku() ? $product->get_sku() : substr($this->get_client_key(), 0, 16).'-'.$product->get_id()),
                 'quantity' => (int)$item->get_quantity(),
                 'name' => $item->get_name(),
                 'unitPriceInclTax' => round( wc_get_price_including_tax( $product ), 2 ),
