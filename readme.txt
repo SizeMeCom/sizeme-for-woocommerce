@@ -2,11 +2,11 @@
 Contributors: sizeme
 Tags: sizeme, measurements, size guide, size recommendations
 Requires at least: 3.8
-Tested up to: 5.0
-Stable tag: 2.0.7
+Tested up to: 5.3.2
+Stable tag: 2.0.8
 Requires PHP: 5.2.4
 WC requires at least: 2.5
-WC tested up to: 3.6.2
+WC tested up to: 3.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations 
 
 == Changelog ==
+
+= 2.0.8 =
+* Fixed sizeme_product object (used to communicate with our product database) creation when the product doesn't have proper SKU's
 
 = 2.0.7 =
 * Fixed javascript bug when no product variation was present
