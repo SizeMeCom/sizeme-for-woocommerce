@@ -467,7 +467,7 @@ class WC_SizeMe_for_WooCommerce {
 							// The attribute code value here is the attribute_pa_size, which is "small","extra-small","large", or whatever the slug is.
 							$attribute_code = $variation['attributes'][ 'attribute_pa_' . $size_attribute ];
 							if ( ! isset( self::$attributes[ $product->get_id() ][ $attribute_code ] ) ) {
-								self::$attributes[ $product->get_id() ][ $attribute_code ] = (string)$variation[ 'sku' ];
+								self::$attributes[ $product->get_id() ][ $attribute_code ] = (string)($variation[ 'sku' ] ? $variation[ 'sku' ] : substr($this->get_client_key(), 0, 16).'-'.$variation[ 'variation_id' ]);
 							}
 						}
 
@@ -573,7 +573,7 @@ class WC_SizeMe_for_WooCommerce {
 		$child_product = New WC_Product_Variation( $variation_id );
 
         $arr = array(
-            'SKU' => $child_product->get_sku(),
+            'SKU' => ($child_product->get_sku() ? $child_product->get_sku() : substr($this->get_client_key(), 0, 16).'-'.$variation_id),
             'quantity' => (int)$quantity,
             'name' => $parent_product->get_name(),
             'orderIdentifier' => $this->get_sm_session_cookie(),
@@ -625,7 +625,7 @@ class WC_SizeMe_for_WooCommerce {
         foreach ($order->get_items() as $item) {
 			$product = $item->get_product();
             $arr['purchasedItems'][] = array(
-                'SKU' => $product->get_sku(),
+                'SKU' => ($product->get_sku() ? $product->get_sku() : substr($this->get_client_key(), 0, 16).'-'.$product->get_id()),
                 'quantity' => (int)$item->get_quantity(),
                 'name' => $item->get_name(),
                 'unitPriceInclTax' => round( wc_get_price_including_tax( $product ), 2 ),
