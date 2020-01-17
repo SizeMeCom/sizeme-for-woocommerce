@@ -75,7 +75,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	var sizeme_product = {
 		name: "<?php echo esc_js( $product->get_formatted_name() ); ?>",
-		SKU: "<?php echo esc_js( $product->get_SKU() ); ?>",
+		SKU: "<?php echo esc_js( strtoupper( ($product->get_sku() ? $product->get_sku() : substr($sizeme->get_client_key(), 0, 16).'-'.$product->get_id() ) ) ); ?>",
 		item: {
 <?php
 	$items = $sizeme->get_variation_sizeme_skus( $product );
