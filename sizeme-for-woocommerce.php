@@ -451,6 +451,7 @@ class WC_SizeMe_for_WooCommerce {
 		if ( empty( self::$attributes[ $product->get_id() ] ) ) {
 
 			$variations = $product->get_available_variations();
+			$parent_sku = $product->get_sku();
 
 			foreach ( $variations as $variation ) {
 
@@ -478,7 +479,9 @@ class WC_SizeMe_for_WooCommerce {
 							}
 						}
 						if ( ! isset( self::$attributes[ $product->get_id() ][ $attribute_code ] ) ) {
-							self::$attributes[ $product->get_id() ][ $attribute_code ] = (string)($variation[ 'sku' ] ? $variation[ 'sku' ] : substr($this->get_client_key(), 0, 16).'-'.$variation[ 'variation_id' ]);
+							$attribute_value = (string)$variation[ 'sku' ];
+							if ( (!$variation[ 'sku' ]) || ( $variation[ 'sku' ] === $parent_sku ) ) $attribute_value = substr($this->get_client_key(), 0, 16).'-'.$variation[ 'variation_id' ];
+							self::$attributes[ $product->get_id() ][ $attribute_code ] = $attribute_value;
 						}
 					}
 				}
