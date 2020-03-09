@@ -3,10 +3,10 @@ Contributors: sizeme
 Tags: sizeme, measurements, size guide, size recommendations
 Requires at least: 3.8
 Tested up to: 5.3.2
-Stable tag: 2.0.9
+Stable tag: 2.1.0
 Requires PHP: 5.2.4
 WC requires at least: 2.5
-WC tested up to: 3.9.2
+WC tested up to: 3.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations 
 
 == Changelog ==
+
+= 2.1.0 =
+* Added support for the maximum recommendation distance setting.  Used if you don't want to recommend sizes that are too far from the optimal size.
 
 = 2.0.9 =
 * Fixed sizeme_product object if the product's attribute is not global (product-specific)
