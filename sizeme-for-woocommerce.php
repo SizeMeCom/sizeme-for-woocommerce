@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
- * Version:     2.0.8
+ * Version:     2.0.9
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
@@ -50,7 +50,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '2.0.8';
+	const VERSION = '2.0.9';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -451,6 +451,7 @@ class WC_SizeMe_for_WooCommerce {
 		if ( empty( self::$attributes[ $product->get_id() ] ) ) {
 
 			$variations = $product->get_available_variations();
+			$parent_sku = $product->get_sku();
 
 			foreach ( $variations as $variation ) {
 
@@ -458,6 +459,7 @@ class WC_SizeMe_for_WooCommerce {
 
 				if ( is_array( $variation_meta ) && count( $variation_meta ) > 0 ) {
 					$size_attribute = $this->get_size_attribute( $product );
+
 					foreach ( $variation_meta as $attribute => $value ) {
 						if ( ! is_array( $value ) || ! isset( $value[0] ) ) {
 							continue;
@@ -466,17 +468,27 @@ class WC_SizeMe_for_WooCommerce {
 						if ( isset( $variation['attributes'][ 'attribute_pa_' . $size_attribute ] ) ) {
 							// The attribute code value here is the attribute_pa_size, which is "small","extra-small","large", or whatever the slug is.
 							$attribute_code = $variation['attributes'][ 'attribute_pa_' . $size_attribute ];
-							if ( ! isset( self::$attributes[ $product->get_id() ][ $attribute_code ] ) ) {
-								self::$attributes[ $product->get_id() ][ $attribute_code ] = (string)($variation[ 'sku' ] ? $variation[ 'sku' ] : substr($this->get_client_key(), 0, 16).'-'.$variation[ 'variation_id' ]);
+						} else {
+							// the SizeMe global size attribute is not present for this product, try something else
+							$first_variation = reset( $variations );
+							if ( isset( $first_variation['attributes'] ) ) {
+								$attribute_key = key( $first_variation['attributes'] );
+								$attribute_code = $variation['attributes'][ $attribute_key ];
+							} else {
+								continue;
 							}
 						}
-
+						if ( ! isset( self::$attributes[ $product->get_id() ][ $attribute_code ] ) ) {
+							$attribute_value = (string)$variation[ 'sku' ];
+							if ( (!$variation[ 'sku' ]) || ( $variation[ 'sku' ] === $parent_sku ) ) $attribute_value = substr($this->get_client_key(), 0, 16).'-'.$variation[ 'variation_id' ];
+							self::$attributes[ $product->get_id() ][ $attribute_code ] = $attribute_value;
+						}
 					}
 				}
 			}
 		}
 
-		return self::$attributes[ $product->get_id() ];
+		return ( isset( self::$attributes[$product->get_id()] ) ? self::$attributes[$product->get_id()] : NULL );
 	}
 
 
