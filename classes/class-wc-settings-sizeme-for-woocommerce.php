@@ -221,6 +221,12 @@ class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 				'id'      => WC_SizeMe_for_WooCommerce::LANG_OVERRIDE,
 			),
 			array(
+				'title'   => __( 'Maximum recommendation distance', 'sizeme-for-woocommerce' ),
+				'type'    => 'text',
+				'default' => get_option( WC_SizeMe_for_WooCommerce::MAX_RECOMMENDATION_DISTANCE, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::MAX_RECOMMENDATION_DISTANCE,
+			),
+			array(
 				'title'   => __( 'Custom styles', 'sizeme-for-woocommerce' ),
 				'type'    => 'textarea',
 				'default' => get_option( WC_SizeMe_for_WooCommerce::CUSTOM_CSS, '' ),

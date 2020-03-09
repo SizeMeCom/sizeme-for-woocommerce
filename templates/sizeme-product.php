@@ -71,6 +71,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
 	$trans = trim( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::ADDITIONAL_TRANSLATIONS, '' ) );
 	if ( !empty($trans) ) echo 'sizeme_options.additionalTranslations = {' . trim( $trans ) . '};'.PHP_EOL;
+
+	// possible MAX_RECOMMENDATION_DISTANCE (from the UI OPTIONS array)
+	$dist = intval( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::MAX_RECOMMENDATION_DISTANCE, '' ) );
+	if ( $dist > 0 ) printf('sizeme_options.uiOptions.maxRecommendationDistance = %d;'.PHP_EOL, $dist );
 	?>
 
 	var sizeme_product = {

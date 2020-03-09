@@ -215,6 +215,15 @@ class WC_SizeMe_for_WooCommerce {
 	 */
 	const ADDITIONAL_TRANSLATIONS = 'additional_translations';
 
+	/**
+	 * UI option, max recommendation distance, used in settings.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var string MAX_RECOMMENDATION_DISTANCE The key for UI option.
+	 */
+	const MAX_RECOMMENDATION_DISTANCE = 'max_recommendation_distance';
+
     /**
      * Info related to SizeMe API requests
 	 *
