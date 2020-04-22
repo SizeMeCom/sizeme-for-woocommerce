@@ -590,11 +590,17 @@ class WC_SizeMe_for_WooCommerce {
      */
     public function send_add_to_cart_info($cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data)
     {
-		$parent_product = New WC_Product( $product_id );
-		$child_product = New WC_Product_Variation( $variation_id );
+		$parent_product = New WC_Product( absint($product_id) );
+		$child_product = New WC_Product_Variation( absint($variation_id) );
+
+		if ($variation_id > 0) {
+			$SKU = ($child_product->get_sku() ? $child_product->get_sku() : substr($this->get_client_key(), 0, 16).'-'.$variation_id);
+		} else {
+			$SKU = ($parent_product->get_sku() ? $parent_product->get_sku() : substr($this->get_client_key(), 0, 16).'-'.$product_id);
+		}
 
         $arr = array(
-            'SKU' => ($child_product->get_sku() ? $child_product->get_sku() : substr($this->get_client_key(), 0, 16).'-'.$variation_id),
+            'SKU' => (string)$SKU,
             'quantity' => (int)$quantity,
             'name' => $parent_product->get_name(),
             'orderIdentifier' => $this->get_sm_session_cookie(),
@@ -815,6 +821,10 @@ class WC_SizeMe_for_WooCommerce {
 	protected function init_admin() {
 		add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_setting_page' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		// ajax based add to carts come this way
+		if ( wp_doing_ajax() ) {
+			add_action( 'woocommerce_add_to_cart', array( $this, 'send_add_to_cart_info' ), 10, 6 );
+		}
 	}
 
 	/**
