@@ -120,13 +120,22 @@ class WC_SizeMe_for_WooCommerce {
 	protected static $attributes = array();
 
 	/**
+	 * Plugin version option key.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @var string SERVICE_STATUS_ID The key for the service status.
+	 */
+	const PLUGIN_VERSION_KEY = 'sizeme_version';
+
+	/**
 	 * Service status option key, used when saving settings and retrieving them.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @var string SERVICE_STATUS_ID The key for the service status.
 	 */
-	const SERVICE_STATUS_ID = 'service_status';
+	const SERVICE_STATUS_ID = 'sizeme_service_status';
 
 	/**
 	 * UI option, API key, used in conversations with the SizeMe Shop API
@@ -135,7 +144,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string API_KEY The key for the Key!
 	 */
-	const API_KEY = 'api_key';
+	const API_KEY = 'sizeme_api_key';
 
 	/**
 	 * UI option, append content to element, used in settings.
@@ -144,7 +153,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string APPEND_CONTENT_TO The key for UI option.
 	 */
-	const APPEND_CONTENT_TO = 'append_content_to';
+	const APPEND_CONTENT_TO = 'sizeme_append_content_to';
 
 	/**
 	 * UI option, invoke element, used in settings.
@@ -153,7 +162,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string INVOKE_ELEMENT The key for UI option.
 	 */
-	const INVOKE_ELEMENT = 'invoke_element';
+	const INVOKE_ELEMENT = 'sizeme_invoke_element';
 
 	/**
 	 * UI option, size selector type, used in settings.
@@ -162,7 +171,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string SIZE_SELECTION_TYPE The key for UI option.
 	 */
-	const SIZE_SELECTION_TYPE = 'size_selection_type';
+	const SIZE_SELECTION_TYPE = 'sizeme_size_selection_type';
 
 	/**
 	 * UI option, add to cart element, used in settings.
@@ -171,7 +180,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string ADD_TO_CART_ELEMENT The key for UI option.
 	 */
-	const ADD_TO_CART_ELEMENT = 'add_to_cart_element';
+	const ADD_TO_CART_ELEMENT = 'sizeme_add_to_cart_element';
 
 	/**
 	 * UI option, add to cart event, used in settings.
@@ -180,7 +189,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string ADD_TO_CART_EVENT The key for UI option.
 	 */
-	const ADD_TO_CART_EVENT = 'add_to_cart_event';
+	const ADD_TO_CART_EVENT = 'sizeme_add_to_cart_event';
 
 	/**
 	 * UI option, add toggler
@@ -189,7 +198,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var boolean ADD_TOGGLER The key for UI option.
 	 */
-	const ADD_TOGGLER = 'add_toggler';
+	const ADD_TOGGLER = 'sizeme_add_toggler';
 
 	/**
 	 * UI option, lang override, used in settings.
@@ -198,7 +207,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string LANG_OVERRIDE The key for UI option.
 	 */
-	const LANG_OVERRIDE = 'lang_override';
+	const LANG_OVERRIDE = 'sizeme_lang_override';
 
 	/**
 	 * UI option, custom css, used in settings.
@@ -207,7 +216,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string CUSTOM_CSS The key for UI option.
 	 */
-	const CUSTOM_CSS = 'custom_css';
+	const CUSTOM_CSS = 'sizeme_custom_css';
 
 	/**
 	 * UI option, additional translations, used in settings.
@@ -216,7 +225,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string ADDITIONAL_TRANSLATIONS The key for UI option.
 	 */
-	const ADDITIONAL_TRANSLATIONS = 'additional_translations';
+	const ADDITIONAL_TRANSLATIONS = 'sizeme_additional_translations';
 
 	/**
 	 * UI option, max recommendation distance, used in settings.
@@ -225,7 +234,16 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string MAX_RECOMMENDATION_DISTANCE The key for UI option.
 	 */
-	const MAX_RECOMMENDATION_DISTANCE = 'max_recommendation_distance';
+	const MAX_RECOMMENDATION_DISTANCE = 'sizeme_max_recommendation_distance';
+
+	/**
+	 * UI option, max recommendation distance, used in settings.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var string MAX_RECOMMENDATION_DISTANCE The key for UI option.
+	 */
+	const SIZE_ATTRIBUTES_KEY = 'sizeme_size_attributes';
 
     /**
      * Info related to SizeMe API requests
@@ -332,7 +350,6 @@ class WC_SizeMe_for_WooCommerce {
 	public function get_service_status() {
 		return get_option( self::SERVICE_STATUS_ID );
 	}
-
 
 	/**
 	 * Get the the client key which is a hash of the super-secret api key
@@ -518,7 +535,7 @@ class WC_SizeMe_for_WooCommerce {
 	 * @return array|string If parameter $one is true, returns a string of attribute name, otherwise an array of names.
 	 */
 	protected function get_size_attribute( WC_Product_Variable $product, $one = true ) {
-		$size_attributes    = get_option( 'size_attributes', array() );
+		$size_attributes    = get_option( self::SIZE_ATTRIBUTES_KEY, array() );
 		$product_attributes = $product->get_attributes();
 		$attribute_names    = array();
 		foreach ( $product_attributes as $attribute_name => $attribute_data ) {
@@ -762,7 +779,6 @@ class WC_SizeMe_for_WooCommerce {
 	 */
 	public function add_setting_page( $settings ) {
 		$settings[] = require_once( 'classes/class-wc-settings-sizeme-for-woocommerce.php' );
-
 		return $settings;
 	}
 
@@ -823,10 +839,12 @@ class WC_SizeMe_for_WooCommerce {
 	 */
 	protected function init_admin() {
 		add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_setting_page' ) );
-		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		// ajax based add to carts come this way
 		if ( wp_doing_ajax() ) {
 			add_action( 'woocommerce_add_to_cart', array( $this, 'send_add_to_cart_info' ), 10, 6 );
+		} else {
+			// Migrate dumb old option system to new if applicable
+			$this->migrate_possible_options();
 		}
 	}
 
@@ -838,7 +856,7 @@ class WC_SizeMe_for_WooCommerce {
 	 * @since 1.0.0
 	 */
 	public function admin_notices() {
-		$size_attributes = get_option( 'size_attributes', array() );
+		$size_attributes = get_option( self::SIZE_ATTRIBUTES_KEY, array() );
 		if ( empty( $size_attributes ) ) {
 			$this->render( 'admin-notice' );
 		}
@@ -909,6 +927,44 @@ class WC_SizeMe_for_WooCommerce {
 			wp_die( $error, $title, $args ); // WPCS: XSS ok.
 
 			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Migrate old options.
+	 *
+	 * Versions before 2.2.0 used non-prefixed names for options and that is very bad.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @return bool True always
+	 */
+	protected function migrate_possible_options() {
+		// Check if the sizeme_version option has been set.  If it's not present, previous (non-prefixed) option keys are likely to been set.
+		if ( get_option('sizeme_version', NULL) === NULL ) {
+			// Check if there actually are old options present
+			if ( get_option('service_status', NULL) !== NULL ) {
+				require_once( WP_PLUGIN_DIR . '/woocommerce/includes/admin/settings/class-wc-settings-page.php' );
+				require_once( 'classes/class-wc-settings-sizeme-for-woocommerce.php' );
+				$setting_page = New WC_Settings_SizeMe_for_WooCommerce;
+				$settings = $setting_page->get_settings();
+				foreach( $settings as $s ) {
+					// check if old style option exists and update if so
+					if ( isset( $s['id'] ) ) {
+						$current_id = $s['id'];
+						if ( strpos( $current_id, 'sizeme_' ) !== false ) {
+							$old_id = str_replace( 'sizeme_','',$current_id );
+							if ( get_option($old_id, NULL) !== NULL ) {
+								update_option( $current_id, get_option( $old_id ) );
+								delete_option( $old_id );
+							}
+						}
+					}
+				}
+			}
+			add_option( 'sizeme_version', self::VERSION );
 		}
 
 		return true;
