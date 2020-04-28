@@ -81,7 +81,6 @@ class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 	 */
 	const ADD_TOGGLER_YES = 'yes';
 
-
 	/**
 	 * Class constructor.
 	 *
@@ -165,7 +164,7 @@ class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 				'type'    => 'multiselect',
 				'options' => self::load_size_attribute_options(),
 				'css'     => 'width: 150px; height: 150px;',
-				'id'      => 'size_attributes',
+				'id'      => WC_SizeMe_for_WooCommerce::SIZE_ATTRIBUTES_KEY,
 			),
 			array(
 				'type' => 'sectionend',
@@ -213,6 +212,7 @@ class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 					self::ADD_TOGGLER_NO => 'No',
 					self::ADD_TOGGLER_YES   => 'Yes',
 				),
+				'default' => get_option( WC_SizeMe_for_WooCommerce::ADD_TOGGLER, self::ADD_TOGGLER_NO ),
 				'id'      => WC_SizeMe_for_WooCommerce::ADD_TOGGLER,
 			),
 			array(
