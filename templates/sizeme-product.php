@@ -34,8 +34,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <script type="text/javascript">
 	//<![CDATA[
 	var sizeme_options = {
-		service_status: "<?php echo esc_js( $sizeme->get_service_status() ); ?>",
-		pluginVersion: "WC-<?php echo WC_VERSION; ?>",
+		serviceStatus: "<?php echo esc_js( $sizeme->get_service_status() ); ?>",
+		pluginVersion: "WC-<?php echo WC_SizeMe_for_WooCommerce::VERSION; ?>",
 		shopType: "woocommerce",
 		clientKey: "<?php echo esc_js( $sizeme->get_client_key() ); ?>",
 		uiOptions: {}
