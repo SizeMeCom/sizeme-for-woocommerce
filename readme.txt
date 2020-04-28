@@ -3,7 +3,7 @@ Contributors: sizeme
 Tags: sizeme, measurements, sizeguide, size guide, size recommendations
 Requires at least: 3.8
 Tested up to: 5.4
-Stable tag: 2.1.2
+Stable tag: 2.2.0
 Requires PHP: 5.2.4
 WC requires at least: 2.5
 WC tested up to: 4.0.1
@@ -129,6 +129,8 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 * Initial release.
 
 == Upgrade Notice ==
+= 2.2.0 =
+Internal option naming changed.  Upgrade normally and it should work fine.
 
 = 2.0.6 =
 Minor performance-related update.  Upgrade normally.
