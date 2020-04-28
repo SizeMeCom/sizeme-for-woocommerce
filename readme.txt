@@ -1,9 +1,9 @@
 === SizeMe for WooCommerce ===
 Contributors: sizeme
-Tags: sizeme, measurements, size guide, size recommendations
+Tags: sizeme, measurements, sizeguide, size guide, size recommendations
 Requires at least: 3.8
 Tested up to: 5.4
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 Requires PHP: 5.2.4
 WC requires at least: 2.5
 WC tested up to: 4.0.1
@@ -82,6 +82,11 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations
 
 == Changelog ==
+= 2.2.0 =
+* Options (finally) prefixed to avoid plugin conflicts and some significant code cleanup too.
+
+= 2.1.2 =
+* Added support for the clear size selection button.
 
 = 2.1.1 =
 * Fixed tracking of ajax-based add to cart events.  Also improved SKU handling with simple products.
