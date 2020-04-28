@@ -82,6 +82,9 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations
 
 == Changelog ==
+= 2.2.0 =
+* Options (finally) prefixed to avoid plugin conflicts and some significant code cleanup too.
+
 = 2.1.2 =
 * Added support for the clear size selection button.
 
