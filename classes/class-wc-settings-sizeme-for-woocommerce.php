@@ -141,6 +141,7 @@ class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 					self::SERVICE_STATUS_ON   => 'On',
 					self::SERVICE_STATUS_OFF  => 'Off',
 				),
+				'default' => get_option( WC_SizeMe_for_WooCommerce::SERVICE_STATUS_ID, self::SERVICE_STATUS_OFF ),
 				'id'      => WC_SizeMe_for_WooCommerce::SERVICE_STATUS_ID,
 			),
 			array(
