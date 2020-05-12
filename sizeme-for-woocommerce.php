@@ -9,14 +9,14 @@
  * @wordpress-plugin
  * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
- * Version:     2.2.0
+ * Version:     2.2.1
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
  * License:     GPLv2 or later
  *
  * WC requires at least: 2.5
- * WC tested up to: 4.0.1
+ * WC tested up to: 4.1.0
  *
  * SizeMe for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '2.2.0';
+	const VERSION = '2.2.1';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -329,11 +329,16 @@ class WC_SizeMe_for_WooCommerce {
 		global $post;
 
 		// Get the product object, and make sure it is a variable product.
+		// If not a variable product, clear the action jackson cookie for perfect tracking.
 		if ( is_product() ) {
 			$product = wc_get_product( $post );
 			if ( $product instanceof WC_Product_Variable ) {
 				wp_enqueue_script( 'sizeme_store_cdn-defer', '//cdn.sizeme.com/store/sizeme.js', '', '', false );
+			} else {
+				$this->clear_sm_cookie( self::COOKIE_ACTION );
 			}
+		} else {
+			$this->clear_sm_cookie( self::COOKIE_ACTION );
 		}
 	}
 
@@ -397,7 +402,20 @@ class WC_SizeMe_for_WooCommerce {
 	 * @return string Cookie value
 	 */
 	public function get_sm_action_cookie() {
-		return ( isset( $_COOKIE[ self::COOKIE_ACTION ] ) ? $_COOKIE[ self::COOKIE_ACTION ] : '' );
+		return ( isset( $_COOKIE[ self::COOKIE_ACTION ] ) ? $_COOKIE[ self::COOKIE_ACTION ] : 'false' );
+	}
+
+	/**
+	 * Clear SizeMe cookie
+	 *
+	 * @since  2.2.1
+	 *
+	 * @return true
+	 */
+	public function clear_sm_cookie($cookie_name) {
+		unset( $_COOKIE[ $cookie_name ] );
+		setcookie( $cookie_name , '', time() - 3600 , '/' );
+		return;
 	}
 
 
@@ -584,9 +602,10 @@ class WC_SizeMe_for_WooCommerce {
 
         $ch = curl_init( $address );
 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, "POST" );
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, $dataString );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch, CURLOPT_USERAGENT, 'WC-' . self::VERSION );
         curl_setopt(
             $ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
@@ -687,8 +706,8 @@ class WC_SizeMe_for_WooCommerce {
 		if ( $this->send( $address, json_encode($arr) ) ) {
 			update_post_meta( $order_id, 'delivery_order_id', esc_attr( $order_id ) );
 			// clear sm_cart cookie
-			unset( $_COOKIE[ self::COOKIE_SESSION ] );
-			setcookie( self::COOKIE_SESSION , '', time() - 3600 , '/' );
+			$this->clear_sm_cookie( self::COOKIE_SESSION );
+			return true;
 		}
 
 		return false;
