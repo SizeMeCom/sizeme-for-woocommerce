@@ -2,11 +2,11 @@
 Contributors: sizeme
 Tags: sizeme, measurements, sizeguide, size guide, size recommendations
 Requires at least: 3.8
-Tested up to: 6.1.1
-Stable tag: 2.2.3
+Tested up to: 6.2.2
+Stable tag: 2.3.0
 Requires PHP: 5.2.4
 WC requires at least: 2.5
-WC tested up to: 7.3.0
+WC tested up to: 7.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,10 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations
 
 == Changelog ==
+= 2.3.0 =
+* Added metric to imperial measurement switch with corresponding options
+* Added possibility to specify which products are for men to show correct measurement guide videos
+
 = 2.2.3 =
 * Discontinued sending unused email hash
 
