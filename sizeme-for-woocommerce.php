@@ -9,14 +9,14 @@
  * @wordpress-plugin
  * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
- * Version:     2.2.3
+ * Version:     2.3.0
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
  * License:     GPLv2 or later
  *
  * WC requires at least: 2.5
- * WC tested up to: 7.3.0
+ * WC tested up to: 7.9.0
  *
  * SizeMe for WooCommerce is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '2.2.3';
+	const VERSION = '2.3.0';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -237,16 +237,43 @@ class WC_SizeMe_for_WooCommerce {
 	const MAX_RECOMMENDATION_DISTANCE = 'sizeme_max_recommendation_distance';
 
 	/**
-	 * UI option, max recommendation distance, used in settings.
+	 * UI option, multiselect, size attributes, used to write correct variations to sizeme_product object.
 	 *
 	 * @since 2.1.0
 	 *
-	 * @var string MAX_RECOMMENDATION_DISTANCE The key for UI option.
+	 * @var string SIZE_ATTRIBUTES_KEY The key to store size attributes in wp_options.
 	 */
 	const SIZE_ATTRIBUTES_KEY = 'sizeme_size_attributes';
 
-    /**
-     * Info related to SizeMe API requests
+	/**
+	 * UI option, reg exp string to identify the male gender from product name and/or SKU.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var string MATCH_GENDER_FROM_NAME_MALE Optional string.
+	 */
+	const MATCH_GENDER_FROM_NAME_MALE = 'sizeme_match_gender_from_name_male';
+
+	/**
+	 * UI option, string for default measurement unit: supports "cm" and "in" currently
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var string MEASUREMENT_UNIT string.
+	 */
+	const MEASUREMENT_UNIT = 'sizeme_measurement_unit';
+
+	/**
+	 * UI option, select to disallow user from selecting measurement unit
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var boolean MEASUREMENT_UNIT_CHOICE_DISALLOWED.
+	 */
+	const MEASUREMENT_UNIT_CHOICE_DISALLOWED = 'sizeme_measurement_unit_choice_disallowed';
+
+	/**
+	 * Info related to SizeMe API requests
 	 *
 	 * @since 2.0.0
 	 *
@@ -418,17 +445,18 @@ class WC_SizeMe_for_WooCommerce {
 
 
 	/**
-	 * Get the toggler boolean state.
+	 * Get a boolean state.
 	 *
-	 * Gets the toggler boolean state from the configuration.
+	 * Gets the a boolean state from the configuration.
 	 * Either 'no' or 'yes'
 	 *
 	 * @since  2.0.0
+	 * @changed  2.3.0
 	 *
 	 * @return string The toggler status as a string.
 	 */
-	public function is_toggler_yes() {
-		return ( get_option( self::ADD_TOGGLER ) == 'yes' );
+	public function is_toggler_yes( $option ) {
+		return ( get_option( $option ) == 'yes' );
 	}
 
 	/**
@@ -960,7 +988,8 @@ class WC_SizeMe_for_WooCommerce {
 	 */
 	protected function migrate_possible_options() {
 		// Check if the sizeme_version option has been set.  If it's not present, previous (non-prefixed) option keys are likely to been set.
-		if ( get_option('sizeme_version', NULL) === NULL ) {
+		$current_sizeme_version = get_option('sizeme_version', NULL);
+		if ( $current_sizeme_version === NULL ) {
 			// Check if there actually are old options present
 			if ( get_option('service_status', NULL) !== NULL ) {
 				require_once( WP_PLUGIN_DIR . '/woocommerce/includes/admin/settings/class-wc-settings-page.php' );
@@ -983,6 +1012,13 @@ class WC_SizeMe_for_WooCommerce {
 			}
 			add_option( 'sizeme_version', self::VERSION );
 		}
+
+		/*
+		// Add new option from version 2.3.0 onward
+		if (version_compare($current_sizeme_version, '2.3.0', '>=')) {
+			add_option('new_option_name', 'default_value');
+		}
+		*/
 
 		return true;
 	}

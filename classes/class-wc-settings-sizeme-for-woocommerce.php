@@ -228,6 +228,32 @@ class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 				'id'      => WC_SizeMe_for_WooCommerce::MAX_RECOMMENDATION_DISTANCE,
 			),
 			array(
+				'title'   => __( 'Match male gender from product name', 'sizeme-for-woocommerce' ),
+				'type'    => 'text',
+				'default' => get_option( WC_SizeMe_for_WooCommerce::MATCH_GENDER_FROM_NAME_MALE, '' ),
+				'id'      => WC_SizeMe_for_WooCommerce::MATCH_GENDER_FROM_NAME_MALE,
+			),
+			array(
+				'title'   => __( 'Measurement unit', 'sizeme-for-woocommerce' ),
+				'type'    => 'radio',
+				'options' => array(
+					'cm' => 'Metric [cm]',
+					'in' => 'Imperial [in]',
+				),
+				'default' => get_option( WC_SizeMe_for_WooCommerce::MEASUREMENT_UNIT, 'cm' ),
+				'id'      => WC_SizeMe_for_WooCommerce::MEASUREMENT_UNIT,
+			),
+			array(
+				'title'   => __( 'Disallow user from changing measurement unit', 'sizeme-for-woocommerce' ),
+				'type'    => 'select',
+				'options' => array(
+					self::ADD_TOGGLER_NO => 'No',		// re-using setting
+					self::ADD_TOGGLER_YES   => 'Yes',
+				),
+				'default' => get_option( WC_SizeMe_for_WooCommerce::MEASUREMENT_UNIT_CHOICE_DISALLOWED, self::ADD_TOGGLER_NO ),
+				'id'      => WC_SizeMe_for_WooCommerce::MEASUREMENT_UNIT_CHOICE_DISALLOWED,
+			),
+			array(
 				'title'   => __( 'Custom styles', 'sizeme-for-woocommerce' ),
 				'type'    => 'textarea',
 				'default' => get_option( WC_SizeMe_for_WooCommerce::CUSTOM_CSS, '' ),

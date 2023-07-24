@@ -54,7 +54,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		'sizeSelectorType' => WC_SizeMe_for_WooCommerce::SIZE_SELECTION_TYPE,
 		'addToCartElement' => WC_SizeMe_for_WooCommerce::ADD_TO_CART_ELEMENT,
 		'addToCartEvent' => WC_SizeMe_for_WooCommerce::ADD_TO_CART_EVENT,
-		'lang' => WC_SizeMe_for_WooCommerce::LANG_OVERRIDE
+		'lang' => WC_SizeMe_for_WooCommerce::LANG_OVERRIDE,
+		'measurementUnit' => WC_SizeMe_for_WooCommerce::MEASUREMENT_UNIT,
 	);
 
 	foreach ($uiOptions as $key => $value) {
@@ -64,8 +65,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	}
 
 	// TOGGLER
-	if ( $sizeme->is_toggler_yes() ) {
-		echo 'sizeme_options.uiOptions.toggler = "true";'.PHP_EOL;
+	if ( $sizeme->is_toggler_yes( WC_SizeMe_for_WooCommerce::ADD_TOGGLER ) ) {
+		echo 'sizeme_options.uiOptions.toggler = true;'.PHP_EOL;
 	}
 
 	// ADDITIONAL TRANSLATIONS (from the UI OPTIONS array)
@@ -75,6 +76,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	// possible MAX_RECOMMENDATION_DISTANCE (from the UI OPTIONS array)
 	$dist = intval( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::MAX_RECOMMENDATION_DISTANCE, '' ) );
 	if ( $dist > 0 ) printf('sizeme_options.uiOptions.maxRecommendationDistance = %d;'.PHP_EOL, $dist );
+
+	// possible measurementUnitChoiceDisallowed
+	if ( $sizeme->is_toggler_yes( WC_SizeMe_for_WooCommerce::MEASUREMENT_UNIT_CHOICE_DISALLOWED ) ) {
+		echo 'sizeme_options.uiOptions.measurementUnitChoiceDisallowed = true;'.PHP_EOL;
+	}
+
+	// possible string
+	$gender_string = trim( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::MATCH_GENDER_FROM_NAME_MALE, '' ) );
+	if ( !empty($gender_string) ) echo 'sizeme_options.uiOptions.matchGenderFromNameMale = "' . htmlspecialchars( $gender_string ) . '";'.PHP_EOL;
+
 	?>
 
 	var sizeme_product = {
