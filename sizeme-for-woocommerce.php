@@ -868,6 +868,7 @@ class WC_SizeMe_for_WooCommerce {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'woocommerce_before_single_product', array( $this, 'add_sizeme_scripts' ), 20, 0 );
+		add_shortcode( 'sizeme_write_scripts', array( $this, 'add_sizeme_scripts' ) );
 
 		add_action( 'woocommerce_add_to_cart', array( $this, 'send_add_to_cart_info' ), 10, 6 );
 		add_action( 'woocommerce_thankyou', array( $this, 'send_order_info' ), 10, 1 );

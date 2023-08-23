@@ -2,11 +2,11 @@
 Contributors: sizeme
 Tags: sizeme, measurements, sizeguide, size guide, size recommendations
 Requires at least: 3.8
-Tested up to: 6.2.2
-Stable tag: 2.3.0
+Tested up to: 6.3.0
+Stable tag: 2.3.1
 Requires PHP: 5.2.4
 WC requires at least: 2.5
-WC tested up to: 7.9.0
+WC tested up to: 8.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,8 @@ It also provides a true-to-product size guide.  No more generic guides.
 [https://www.sizeme.com](https://www.sizeme.com/)
 
 The plugin is fully WPML compatible and also works with multiple attributes (such as size and color).
+
+https://www.youtube.com/watch?v=RRrMBtog75A
 
 == Features ==
 
