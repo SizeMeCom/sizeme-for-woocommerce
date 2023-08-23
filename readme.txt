@@ -3,7 +3,7 @@ Contributors: sizeme
 Tags: sizeme, measurements, sizeguide, size guide, size recommendations
 Requires at least: 3.8
 Tested up to: 6.3.0
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 Requires PHP: 5.2.4
 WC requires at least: 2.5
 WC tested up to: 8.0.2

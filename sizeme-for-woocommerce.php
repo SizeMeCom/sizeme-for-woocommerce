@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
- * Version:     2.3.0
+ * Version:     2.3.2
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
@@ -53,7 +53,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '2.3.0';
+	const VERSION = '2.3.2';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -1013,13 +1013,6 @@ class WC_SizeMe_for_WooCommerce {
 			}
 			add_option( 'sizeme_version', self::VERSION );
 		}
-
-		/*
-		// Add new option from version 2.3.0 onward
-		if (version_compare($current_sizeme_version, '2.3.0', '>=')) {
-			add_option('new_option_name', 'default_value');
-		}
-		*/
 
 		return true;
 	}
