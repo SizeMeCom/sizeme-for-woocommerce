@@ -2,11 +2,11 @@
 Contributors: sizeme
 Tags: sizeme, measurements, sizeguide, size guide, size recommendations
 Requires at least: 3.8
-Tested up to: 6.3.0
-Stable tag: 2.3.2
+Tested up to: 6.3.1
+Stable tag: 2.3.3
 Requires PHP: 5.2.4
 WC requires at least: 2.5
-WC tested up to: 8.0.2
+WC tested up to: 8.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,11 +18,12 @@ SizeMe is a web store plugin that enables your consumers to input their measurem
 
 It also provides a true-to-product size guide.  No more generic guides.
 
+https://www.youtube.com/watch?v=RRrMBtog75A
+
 [https://www.sizeme.com](https://www.sizeme.com/)
 
 The plugin is fully WPML compatible and also works with multiple attributes (such as size and color).
 
-https://www.youtube.com/watch?v=RRrMBtog75A
 
 == Features ==
 
@@ -84,6 +85,16 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations
 
 == Changelog ==
+= 2.3.3 =
+* Litespeed compatibility improved
+
+= 2.3.2 =
+* Code cleanup
+
+= 2.3.1 =
+* Added shortcode "sizeme_write_scripts" to include required scripts
+  * This is for cases where the normal WC hooks are not launched for some reason
+
 = 2.3.0 =
 * Added metric to imperial measurement switch with corresponding options
 * Added possibility to specify which products are for men to show correct measurement guide videos

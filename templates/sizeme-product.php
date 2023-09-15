@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<script type="text/javascript">
+<script type="text/javascript" data-no-optimize="1">
 	//<![CDATA[
 	var sizeme_options = {
 		serviceStatus: "<?php echo esc_js( $sizeme->get_service_status() ); ?>",
