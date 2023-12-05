@@ -254,6 +254,16 @@ class WC_Settings_SizeMe_for_WooCommerce extends WC_Settings_Page {
 				'id'      => WC_SizeMe_for_WooCommerce::MEASUREMENT_UNIT_CHOICE_DISALLOWED,
 			),
 			array(
+				'title'   => __( 'Show measurements flat (not circular) in size guide', 'sizeme-for-woocommerce' ),
+				'type'    => 'select',
+				'options' => array(
+					self::ADD_TOGGLER_NO => 'No',		// re-using setting
+					self::ADD_TOGGLER_YES   => 'Yes',
+				),
+				'default' => get_option( WC_SizeMe_for_WooCommerce::FLAT_MEASUREMENTS, self::ADD_TOGGLER_YES ),
+				'id'      => WC_SizeMe_for_WooCommerce::FLAT_MEASUREMENTS,
+			),
+			array(
 				'title'   => __( 'Custom styles', 'sizeme-for-woocommerce' ),
 				'type'    => 'textarea',
 				'default' => get_option( WC_SizeMe_for_WooCommerce::CUSTOM_CSS, '' ),

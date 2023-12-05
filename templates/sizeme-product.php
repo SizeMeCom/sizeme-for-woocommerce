@@ -82,6 +82,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		echo 'sizeme_options.uiOptions.measurementUnitChoiceDisallowed = true;'.PHP_EOL;
 	}
 
+	// possible flat measurement setting
+	if ( $sizeme->is_toggler_no( WC_SizeMe_for_WooCommerce::FLAT_MEASUREMENTS ) ) {
+		echo 'sizeme_options.uiOptions.flatMeasurements = false;'.PHP_EOL;
+	}
+
 	// possible string
 	$gender_string = trim( $sizeme->get_ui_option( WC_SizeMe_for_WooCommerce::MATCH_GENDER_FROM_NAME_MALE, '' ) );
 	if ( !empty($gender_string) ) echo 'sizeme_options.uiOptions.matchGenderFromNameMale = "' . htmlspecialchars( $gender_string ) . '";'.PHP_EOL;

@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name: SizeMe for WooCommerce
  * Description: SizeMe is a web store plugin that enables your consumers to input their measurements and get personalised fit recommendations based on actual product data.
- * Version:     2.3.3
+ * Version:     2.3.4
  * Author:      SizeMe Ltd
  * Author URI:  https://www.sizeme.com/
  * Text Domain: sizeme
@@ -53,7 +53,7 @@ class WC_SizeMe_for_WooCommerce {
 	 *
 	 * @var string VERSION The plugin version.
 	 */
-	const VERSION = '2.3.3';
+	const VERSION = '2.3.4';
 
 	/**
 	 * Minimum WordPress version this plugin works with, used for dependency checks.
@@ -273,6 +273,15 @@ class WC_SizeMe_for_WooCommerce {
 	const MEASUREMENT_UNIT_CHOICE_DISALLOWED = 'sizeme_measurement_unit_choice_disallowed';
 
 	/**
+	 * UI option, whether to show flat or circular measurements in size guide
+	 *
+	 * @since 2.3.4
+	 *
+	 * @var boolean FLAT_MEASUREMENTS.
+	 */
+	const FLAT_MEASUREMENTS = 'sizeme_flat_measurements';
+
+	/**
 	 * Info related to SizeMe API requests
 	 *
 	 * @since 2.0.0
@@ -448,15 +457,30 @@ class WC_SizeMe_for_WooCommerce {
 	 * Get a boolean state.
 	 *
 	 * Gets the a boolean state from the configuration.
-	 * Either 'no' or 'yes'
+	 * Either true of false
 	 *
 	 * @since  2.0.0
-	 * @changed  2.3.0
+	 * @changed  2.3.4
 	 *
-	 * @return string The toggler status as a string.
+	 * @return boolean The toggler yes status as a boolean.
 	 */
 	public function is_toggler_yes( $option ) {
 		return ( get_option( $option ) == 'yes' );
+	}
+
+	/**
+	 * Get a boolean state.
+	 *
+	 * Gets the a boolean state from the configuration.
+	 * Either true of false
+	 *
+	 * @since  2.3.4
+	 * @changed  2.3.4
+	 *
+	 * @return boolean The toggler no status as a boolean.
+	 */
+	public function is_toggler_no( $option ) {
+		return ( get_option( $option ) == 'no' );
 	}
 
 	/**
