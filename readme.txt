@@ -2,11 +2,11 @@
 Contributors: sizeme
 Tags: sizeme, measurements, sizeguide, size guide, size recommendations
 Requires at least: 3.8
-Tested up to: 6.4.1
-Stable tag: 2.3.4
+Tested up to: 6.7.1
+Stable tag: 2.3.5
 Requires PHP: 5.2.4
 WC requires at least: 2.5
-WC tested up to: 8.3.1
+WC tested up to: 9.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ To install and take into use the SizeMe for WooCommerce plugin, follow the instr
 4. Visualize the fit using the SizeMe Sizing Bar™ and easy-to-understand illustrations
 
 == Changelog ==
+= 2.3.5 =
+* Code cleanup
+
 = 2.3.4 =
 * Added user interface option for showing flat or circular measurements in size guide
 
